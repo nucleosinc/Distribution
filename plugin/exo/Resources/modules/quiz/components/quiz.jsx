@@ -73,7 +73,7 @@ function customActions(props) {
     })
   }
 
-  if (props.editable || props.papersAdmin) {
+  if (props.papersAdmin) {
     // Export results
     actions.push({
       icon: 'fa fa-fw fa-table',
@@ -84,7 +84,7 @@ function customActions(props) {
   }
 
   // Docimology
-  if (props.editable || props.docimologyAdmin) {
+  if (props.docimologyAdmin) {
     actions.push({
       icon: 'fa fa-fw fa-pie-chart',
       label: tex('docimology'),
