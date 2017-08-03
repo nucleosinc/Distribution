@@ -119,7 +119,7 @@ class PathController
      */
     public function updateAction(Path $path, Request $request)
     {
-        $this->assertHasPermission('ADMINISTRATE', $path);
+        $this->assertHasPermission('EDIT', $path);
 
         // Create form
         $form = $this->formFactory->create(new PathType(), $path, [

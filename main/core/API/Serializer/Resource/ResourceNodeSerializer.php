@@ -201,6 +201,7 @@ class ResourceNodeSerializer
 
     private function getActions(ResourceNode $resourceNode)
     {
+        // todo : checks if the action is implemented by the resource
         //ResourceManager::isResourceActionImplemented(ResourceType $resourceType = null, $actionName)
         $actions = $this->menuManager->getMenus($resourceNode);
         $data = [];

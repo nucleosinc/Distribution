@@ -76,6 +76,7 @@
     background: #ebebeb;
     position: relative; // for buttons with labels
     border-radius: 50%;
+    border-color: transparent;
     padding: .65em;
 
     &.page-action-primary {
@@ -116,12 +117,18 @@
     &.disabled {
 
     }
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
         color: #333; // body color
+        border-color: transparent;
     }
-    &:focus {
+}
 
-    }
+.open > .dropdown-toggle.page-action-btn {
+    color: #333; // body color
+    border-color: transparent;
 }
 
 /* for retro-compatibility, will be removed */

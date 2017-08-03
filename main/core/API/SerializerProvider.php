@@ -70,11 +70,12 @@ class SerializerProvider
     /**
      * Serializes an object.
      *
-     * @param $object - the object to serialize
+     * @param mixed $object  - the object to serialize
+     * @param array $options - an optional list of serialization options
      *
      * @return mixed - a json serializable structure
      */
-    public function serialize($object, $options = [])
+    public function serialize($object, array $options = [])
     {
         return $this->get($object)->serialize($object, $options);
     }

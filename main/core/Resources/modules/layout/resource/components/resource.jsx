@@ -46,6 +46,7 @@ class Resource extends Component {
         <PageHeader
           className="resource-header"
           title={this.props.resourceNode.name}
+          subtitle={this.props.subtitle}
         >
           <ResourceActions
             resourceNode={this.props.resourceNode}
@@ -75,6 +76,7 @@ Resource.propTypes = {
       fullscreen: T.bool.isRequired
     }).isRequired
   }).isRequired,
+  subtitle: T.string,
   embedded: T.bool,
   children: T.node.isRequired,
   modal: T.shape({

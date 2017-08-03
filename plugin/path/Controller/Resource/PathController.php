@@ -55,7 +55,7 @@ class PathController extends Controller
      */
     public function editAction(Path $path)
     {
-        $this->assertHasPermission('ADMINISTRATE', $path);
+        $this->assertHasPermission('EDIT', $path);
 
         return [
             '_resource' => $path,
@@ -77,7 +77,7 @@ class PathController extends Controller
      */
     public function manageResultsAction(Path $path)
     {
-        $this->assertHasPermission('ADMINISTRATE', $path);
+        $this->assertHasPermission('MANAGE_RESULTS', $path);
 
         // retrieve users having access to the WS
         $users = $this->get('claroline.persistence.object_manager')->getRepository('ClarolineCoreBundle:User')->findUsersByWorkspace($path->getWorkspace());

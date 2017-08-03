@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Manager\Resource;
 
+use Claroline\CoreBundle\Entity\Resource\MenuAction;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Persistence\ObjectManager;
 use JMS\DiExtraBundle\Annotation as DI;
@@ -20,25 +21,34 @@ use JMS\DiExtraBundle\Annotation as DI;
  */
 class ResourceMenuManager
 {
+    /** @var ObjectManager */
     private $om;
 
     /**
+     * ResourceMenuManager constructor.
+     *
      * @DI\InjectParams({
      *      "om" = @DI\Inject("claroline.persistence.object_manager")
      * })
+     *
+     * @param ObjectManager $om
      */
-    public function __construct(
-        ObjectManager $om
-    ) {
+    public function __construct(ObjectManager $om)
+    {
         $this->om = $om;
     }
 
+    /**
+     * @param ResourceNode $resourceNode
+     *
+     * @return MenuAction[]
+     */
     public function getMenus(ResourceNode $resourceNode)
     {
-        $specificMenus = $resourceNode->getResourceType()->getActions();
-
         return array_merge(
-            $specificMenus->toArray(),
+            // actions of the resource type
+            $resourceNode->getResourceType()->getActions()->toArray(),
+            // generic actions available for all resource types
             $this->om->getRepository('ClarolineCoreBundle:Resource\MenuAction')->findBy(['resourceType' => null])
         );
     }
