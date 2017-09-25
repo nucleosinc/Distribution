@@ -172,11 +172,13 @@ class WorkspaceManager
     {
         $workspace->setName($name);
         $root = $this->resourceManager->getWorkspaceRoot($workspace);
-        $root->setName($name);
+
+        if ($root) {
+            $root->setName($name);
+            $this->om->persist($root);
+        }
 
         $this->om->persist($workspace);
-        $this->om->persist($root);
-
         $this->om->flush();
     }
 
@@ -879,11 +881,13 @@ class WorkspaceManager
 
             if ($update) {
                 $workspace = $this->getOneByCode($code);
-                $this->rename($workspace, $name);
+
                 if (!$workspace) {
                     //if the workspace doesn't exists, create it...
                     $workspace = new Workspace();
+                    $workspace->setGuid(uniqid('', true));
                     $workspace->setName($name);
+                    $this->rename($workspace, $name);
                 }
                 if ($logger) {
                     $logger('Updating '.$code.' ('.$i.'/'.count($workspaces).') ...');
@@ -891,6 +895,7 @@ class WorkspaceManager
             } else {
                 $workspace = new Workspace();
                 $workspace->setName($name);
+                $workspace->setGuid(uniqid('', true));
             }
 
             $workspace->setCode($code);
