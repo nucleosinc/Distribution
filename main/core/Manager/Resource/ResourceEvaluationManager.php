@@ -11,6 +11,7 @@
 
 namespace Claroline\CoreBundle\Manager\Resource;
 
+use Claroline\CoreBundle\Entity\Resource\AbstractResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceEvaluation;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
@@ -124,6 +125,7 @@ class ResourceEvaluationManager
         $score = $evaluation->getScore();
         $scoreMax = $evaluation->getScoreMax();
         $scoreMin = $evaluation->getScoreMin();
+        $statusPriority = AbstractResourceEvaluation::STATUS_PRORITY;
 
         if (!empty($duration)) {
             $reuDuration = $reu->getDuration() ? $reu->getDuration() : 0;
@@ -150,7 +152,7 @@ class ResourceEvaluationManager
         if ($forceStatus ||
             empty($reu->getStatus()) ||
             ($evaluation->isSuccessful() && !$reu->isSuccessful()) ||
-            (!$reu->isTerminated() && !$reu->isSuccessful())
+            $statusPriority[$evaluation->getStatus()] > $statusPriority[$reu->getStatus()]
         ) {
             $reu->setStatus($evaluation->getStatus());
         }
