@@ -16,9 +16,9 @@ actions.workspaceRemoveManager =  makeActionCreator(WORKSPACE_REMOVE_MANAGER, 'w
 
 actions.copyWorkspaces = (workspaces, isModel = 0) => ({
   [API_REQUEST]: {
-    url: generateUrl('api_copy_workspaces', {isModel: isModel}) + getDataQueryString(workspaces),
+    url: generateUrl('apiv2_workspace_copy_bulk') + getDataQueryString(workspaces) + '&model=' + isModel,
     request: {
-      method: 'PATCH'
+      method: 'GET'
     },
     success: (data, dispatch) => dispatch(listActions.fetchData('workspaces'))
   }

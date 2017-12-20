@@ -12,6 +12,7 @@
 namespace Claroline\CoreBundle\Controller\APINew;
 
 use Claroline\CoreBundle\Annotations\ApiMeta;
+use Claroline\CoreBundle\API\Options;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -29,7 +30,8 @@ class WorkspaceController extends AbstractCrudController
     public function copyBulkAction(Request $request, $class)
     {
         //add params for the copy here
-        $this->options['copyBulk'] = [];
+        $this->options['copyBulk'] = (int) $request->query->get('model') === 1 ?
+          [Options::WORKSPACE_MODEL] : [];
 
         return parent::copyBulkAction($request, $class);
     }
