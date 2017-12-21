@@ -384,7 +384,7 @@ class Workspace
      */
     public function getDescription()
     {
-        return $this->description;
+        return $this->description ? $this->description : '';
     }
 
     /**

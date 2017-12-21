@@ -26,6 +26,8 @@
     "displayable": false
   },
   "restrictions": {
+    "accessibleFrom": null,
+    "accessibleUntil": null,
     "maxUsers": 10000,
     "maxStorage": "1 TB",
     "maxResources": 10000

@@ -30,15 +30,15 @@
           "description": "Is it a personal workspace"
         },
         "description": {
-          "type": "string",
+          "type": ["string"],
           "description": "The workspace description"
         },
         "created": {
-          "type": "string",
+          "type": ["string"],
           "description": "The workspace creation date"
         },
         "creator": {
-          "type": "object",
+          "type": ["object", "null"],
           "properties": {
             "id": {
               "type": "string",
@@ -61,11 +61,11 @@
       "type": "object",
       "properties": {
         "accessibleFrom": {
-          "type": "string",
+          "type": ["string", "null"],
           "description": "The workspace opening date"
         },
         "accessibleUntil": {
-          "type": "string",
+          "type": ["string", "null"],
           "description": "The workspace closing date"
         },
         "maxUsers": {
