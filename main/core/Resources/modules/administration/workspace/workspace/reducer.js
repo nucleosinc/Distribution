@@ -43,8 +43,13 @@ const workspacesReducer = combineReducers({
   })
 })
 
+const organizationReducer = combineReducers({
+  picker: makeListReducer('organizations.picker')
+})
+
 const reducer = makePageReducer({}, {
-  workspaces: workspacesReducer
+  workspaces: workspacesReducer,
+  organizations: organizationReducer
 })
 
 export {

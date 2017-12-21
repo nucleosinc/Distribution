@@ -57,6 +57,7 @@ const WorkspaceForm = props =>
     <FormSections
       level={3}
     >
+    {
       <FormSection
         id="workspace-organizations"
         icon="fa fa-fw fa-building"
@@ -71,7 +72,7 @@ const WorkspaceForm = props =>
         ]}
       >
         <DataListContainer
-          name="workspace.current.organizations"
+          name="workspaces.current.organizations"
           open={OrganizationList.open}
           fetch={{
             url: ['apiv2_workspace_list_organizations', {id: props.workspace.id}],
@@ -84,6 +85,7 @@ const WorkspaceForm = props =>
           card={OrganizationList.card}
         />
       </FormSection>
+      }
     </FormSections>
   </FormContainer>
 
