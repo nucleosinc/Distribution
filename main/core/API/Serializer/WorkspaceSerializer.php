@@ -163,6 +163,8 @@ class WorkspaceSerializer
         $this->sipe('registration.validation', 'setRegistrationValidation', $data, $workspace);
         $this->sipe('registration.selfRegistration', 'setSelfRegistration', $data, $workspace);
         $this->sipe('registration.selfUnregistration', 'setSelfUnregistration', $data, $workspace);
+
+        return $workspace;
     }
 
     /**

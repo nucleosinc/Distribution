@@ -40,6 +40,16 @@ class WorkspaceCrud
     }
 
     /**
+     * @DI\Observe("crud_pre_create_object_claroline_corebundle_entity_workspace_workspace")
+     *
+     * @param CrudEvent $event
+     */
+    public function preCreate(CrudEvent $event)
+    {
+        $this->manager->createWorkspace($event->getObject());
+    }
+
+    /**
      * @DI\Observe("crud_pre_copy_object_claroline_corebundle_entity_workspace_workspace")
      *
      * @param CrudEvent $event
