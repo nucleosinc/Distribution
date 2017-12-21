@@ -3,6 +3,9 @@ import {generateUrl} from '#/main/core/fos-js-router'
 
 import {actions as listActions} from '#/main/core/data/list/actions'
 import {getDataQueryString} from '#/main/core/data/list/utils'
+import {actions as formActions} from '#/main/core/data/form/actions'
+
+import {Workspace as WorkspaceTypes} from '#/main/core/administration/workspace/workspace/prop-types'
 
 import {API_REQUEST} from '#/main/core/api/actions'
 
@@ -13,6 +16,21 @@ export const actions = {}
 
 actions.workspaceAddManager = makeActionCreator(WORKSPACE_ADD_MANAGER, 'workspace', 'user')
 actions.workspaceRemoveManager =  makeActionCreator(WORKSPACE_REMOVE_MANAGER, 'workspace', 'user')
+
+actions.open = (formName, id = null) => (dispatch) => {
+  if (id) {
+    dispatch({
+      [API_REQUEST]: {
+        url: ['apiv2_workspace_get', {id}],
+        success: (response, dispatch) => {
+          dispatch(formActions.resetForm(formName, response, false))
+        }
+      }
+    })
+  } else {
+    dispatch(formActions.resetForm(formName, WorkspaceTypes.defaultProps, true))
+  }
+}
 
 actions.copyWorkspaces = (workspaces, isModel = 0) => ({
   [API_REQUEST]: {
