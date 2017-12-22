@@ -106,7 +106,7 @@ const WorkspaceForm = props =>
           {
             icon: 'fa fa-fw fa-plus',
             label: t('add_organizations'),
-            action: () => props.pickOrganizations(props.workspace.id)
+            action: () => props.pickOrganizations(props.workspace.uuid)
           }
         ]}
       >
@@ -114,11 +114,11 @@ const WorkspaceForm = props =>
           name="workspaces.current.organizations"
           open={OrganizationList.open}
           fetch={{
-            url: ['apiv2_workspace_list_organizations', {id: props.workspace.id}],
-            autoload: props.workspace.id && !props.new
+            url: ['apiv2_workspace_list_organizations', {id: props.workspace.uuid}],
+            autoload: props.workspace.uuid && !props.new
           }}
           delete={{
-            url: ['apiv2_workspace_remove_organizations', {id: props.workspace.id}]
+            url: ['apiv2_workspace_remove_organizations', {id: props.workspace.uuid}]
           }}
           definition={OrganizationList.definition}
           card={OrganizationList.card}
@@ -131,7 +131,7 @@ const WorkspaceForm = props =>
 WorkspaceForm.propTypes = {
   new: T.bool.isRequired,
   workspace: T.shape({
-    id: T.string
+    uuid: T.string
   }).isRequired,
   pickOrganizations: T.func.isRequired
 }

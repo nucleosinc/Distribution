@@ -13,6 +13,7 @@ namespace Claroline\CoreBundle\Controller\APINew;
 
 use Claroline\CoreBundle\Annotations\ApiMeta;
 use Claroline\CoreBundle\API\Options;
+use Claroline\CoreBundle\Controller\APINew\Model\HasOrganizationsTrait;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -22,6 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class WorkspaceController extends AbstractCrudController
 {
+    use HasOrganizationsTrait;
+
     public function getName()
     {
         return 'workspace';

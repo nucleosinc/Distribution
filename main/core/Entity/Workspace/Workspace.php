@@ -14,7 +14,6 @@ namespace Claroline\CoreBundle\Entity\Workspace;
 use Claroline\CoreBundle\Entity\Calendar\Event;
 use Claroline\CoreBundle\Entity\Model\OrganizationsTrait;
 use Claroline\CoreBundle\Entity\Model\UuidTrait;
-use Claroline\CoreBundle\Entity\Organization\Organization;
 use Claroline\CoreBundle\Entity\Resource\ResourceNode;
 use Claroline\CoreBundle\Entity\Role;
 use Claroline\CoreBundle\Entity\Tool\OrderedTool;
@@ -327,7 +326,7 @@ class Workspace
      *     inversedBy="workspaces"
      * )
      *
-     * @var Organization[]|ArrayCollection
+     * @var ArrayCollection
      */
     protected $organizations;
 
