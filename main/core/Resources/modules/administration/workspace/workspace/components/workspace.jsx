@@ -64,19 +64,19 @@ const WorkspaceForm = props =>
         primary: true,
         fields: [
           {
-            name: 'validation',
+            name: 'registration.validation',
             type: 'boolean',
-            label: t('validation')
+            label: t('registration_validation')
           },
           {
-            name: 'selfRegistration',
+            name: 'registration.selfRegistration',
             type: 'boolean',
-            label: t('selfRegistration')
+            label: t('public_registration')
           },
           {
-            name: 'selfUnregistration',
+            name: 'registration.selfUnregistration',
             type: 'boolean',
-            label: t('selfUnregistration')
+            label: t('public_unregistration')
           }
         ]
       },
@@ -85,9 +85,9 @@ const WorkspaceForm = props =>
         title: t('display'),
         fields: [
           {
-            name: 'displayable',
+            name: 'display.displayable',
             type: 'boolean',
-            label: t('displayable')
+            label: t('displayable_in_workspace_list')
           }
         ]
       }
