@@ -49,6 +49,45 @@ const WorkspaceForm = props =>
             type: 'string',
             label: t('name'),
             required: true
+          },
+          {
+            name: 'code',
+            type: 'string',
+            label: t('code'),
+            required: true
+          }
+        ]
+      },
+      {
+        id: 'registration',
+        title: t('registration'),
+        primary: true,
+        fields: [
+          {
+            name: 'validation',
+            type: 'boolean',
+            label: t('validation')
+          },
+          {
+            name: 'selfRegistration',
+            type: 'boolean',
+            label: t('selfRegistration')
+          },
+          {
+            name: 'selfUnregistration',
+            type: 'boolean',
+            label: t('selfUnregistration')
+          }
+        ]
+      },
+      {
+        id: 'display',
+        title: t('display'),
+        fields: [
+          {
+            name: 'displayable',
+            type: 'boolean',
+            label: t('displayable')
           }
         ]
       }
