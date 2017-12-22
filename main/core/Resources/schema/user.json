@@ -55,7 +55,7 @@
             "required": ["id"]
           },
           {
-            "$ref": "https://github.com/claroline/Distribution/tree/master/main/core/Resources/schema/user.json"
+              "type": "object"
           }
         ]
       }
