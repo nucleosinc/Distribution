@@ -95,7 +95,15 @@ class ConfigureFieldModal extends Component {
             icon: 'fa fa-fw fa-key',
             title: t('access_restrictions'),
             fields: [
-
+              {
+                name: 'restrictions.open',
+                type: 'boolean',
+                label: t('access_role_show')
+              }, {
+                name: 'restrictions.edit',
+                type: 'boolean',
+                label: t('access_role_edit')
+              }
             ]
           }
         ]}
