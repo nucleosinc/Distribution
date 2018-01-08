@@ -32,26 +32,13 @@ actions.open = (formName, id = null) => (dispatch) => {
   }
 }
 
-actions.addOrganizations = (id, organizations) => ({
-  [API_REQUEST]: {
-    url: generateUrl('apiv2_user_add_organizations', {id: id}) +'?'+ organizations.map(id => 'ids[]='+id).join('&'),
-    request: {
-      method: 'PATCH'
-    },
-    success: (data, dispatch) => {
-      dispatch(listActions.invalidateData('users.list'))
-      dispatch(listActions.invalidateData('users.current.organizations'))
-    }
-  }
-})
-
 actions.copyWorkspaces = (workspaces, isModel = 0) => ({
   [API_REQUEST]: {
     url: generateUrl('apiv2_workspace_copy_bulk') + getDataQueryString(workspaces) + '&model=' + isModel,
     request: {
       method: 'GET'
     },
-    success: (data, dispatch) => dispatch(listActions.fetchData('workspaces'))
+    success: (data, dispatch) => dispatch(listActions.invalidateData('workspaces.list'))
   }
 })
 
