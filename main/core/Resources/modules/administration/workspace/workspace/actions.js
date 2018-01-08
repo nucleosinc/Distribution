@@ -1,4 +1,4 @@
-import {makeActionCreator} from '#/main/core/scaffolding/reducer'
+import {makeActionCreator} from '#/main/core/scaffolding/actions'
 import {generateUrl} from '#/main/core/api/router'
 
 import {actions as listActions} from '#/main/core/data/list/actions'
