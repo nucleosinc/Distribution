@@ -2,10 +2,11 @@
 
 namespace Claroline\CoreBundle\API\Crud;
 
-use Claroline\CoreBundle\API\Crud;
 use Claroline\CoreBundle\API\Options;
 use Claroline\CoreBundle\Entity\Workspace\Workspace;
-use Claroline\CoreBundle\Event\CrudEvent;
+use Claroline\CoreBundle\Event\Crud\CopyEvent;
+use Claroline\CoreBundle\Event\Crud\CreateEvent;
+use Claroline\CoreBundle\Event\Crud\DeleteEvent;
 use Claroline\CoreBundle\Manager\WorkspaceManager;
 use JMS\DiExtraBundle\Annotation as DI;
 
@@ -32,9 +33,9 @@ class WorkspaceCrud
     /**
      * @DI\Observe("crud_pre_delete_object_claroline_corebundle_entity_workspace_workspace")
      *
-     * @param CrudEvent $event
+     * @param DeleteEvent $event
      */
-    public function preDelete(CrudEvent $event)
+    public function preDelete(DeleteEvent $event)
     {
         $this->manager->deleteWorkspace($event->getObject());
     }
@@ -42,9 +43,9 @@ class WorkspaceCrud
     /**
      * @DI\Observe("crud_pre_create_object_claroline_corebundle_entity_workspace_workspace")
      *
-     * @param CrudEvent $event
+     * @param CreateEvent $event
      */
-    public function preCreate(CrudEvent $event)
+    public function preCreate(CreateEvent $event)
     {
         $this->manager->createWorkspace($event->getObject());
     }
@@ -52,14 +53,14 @@ class WorkspaceCrud
     /**
      * @DI\Observe("crud_pre_copy_object_claroline_corebundle_entity_workspace_workspace")
      *
-     * @param CrudEvent $event
+     * @param CopyEvent $event
      */
-    public function preCopy(CrudEvent $event)
+    public function preCopy(CopyEvent $event)
     {
         $workspace = $event->getObject();
         $options = $event->getOptions();
 
-        $new = $options[Crud::NEW_OBJECT];
+        $new = $event->getCopy();
         $new->setName($workspace->getName());
         $new->setCode($workspace->getCode());
 

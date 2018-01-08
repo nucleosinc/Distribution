@@ -21,8 +21,6 @@ class Crud
     const COLLECTION_ADD = 'add';
     /** @var string */
     const COLLECTION_REMOVE = 'remove';
-    /** @var string */
-    const NEW_OBJECT = 'new_object';
 
     /** @var ObjectManager */
     private $om;
@@ -87,9 +85,9 @@ class Crud
         // creates the entity if allowed
         //$this->checkPermission('CREATE', $object, [], true);
 
-        if ($this->dispatch('crud_pre_create_object', $object, $options)) {
+        if ($this->dispatch('create', 'pre', [$object, $options])) {
             $this->om->save($object);
-            $this->dispatch('crud_post_create_object', $object, $options);
+            $this->dispatch('create', 'post', [$object, $options]);
         }
 
         return $object;
@@ -114,9 +112,9 @@ class Crud
         // updates the entity if allowed
         $this->checkPermission('EDIT', $object, [], true);
 
-        if ($this->dispatch('crud_pre_update_object', $object, $options)) {
+        if ($this->dispatch('update', 'pre', [$object, $options])) {
             $this->om->save($object);
-            $this->dispatch('crud_post_update_object', $object, $options);
+            $this->dispatch('update', 'post', [$object, $options]);
         }
 
         return $object;
@@ -132,12 +130,12 @@ class Crud
     {
         $this->checkPermission('DELETE', $object, [], true);
 
-        if ($this->dispatch('crud_pre_delete_object', $object, $options)) {
+        if ($this->dispatch('delete', 'pre', [$object, $options])) {
             if (!in_array(Options::SOFT_DELETE, $options)) {
                 $this->om->remove($object);
                 $this->om->flush();
             }
-            $this->dispatch('crud_post_delete_object', $object, $options);
+            $this->dispatch('delete', 'post', [$object, $options]);
         }
     }
 
@@ -170,10 +168,12 @@ class Crud
     {
         $this->checkPermission('COPY', $object, [], true);
         $new = new $class();
-        //this is not pretty yet. We want to be able to access this object at the crud event level
-        $options[self::NEW_OBJECT] = $new;
-        if ($this->dispatch('crud_pre_copy_object', $object, $options)) {
-            $this->dispatch('crud_post_copy_object', $object, $options);
+
+        //first event is the pre one
+        if ($this->dispatch('copy', 'pre', [$object, $options, $new])) {
+            //second event is the post one
+            //we could use only one event afaik
+            $this->dispatch('copy', 'post', [$object, $options, $new]);
         }
 
         return $new;
@@ -224,13 +224,13 @@ class Crud
         $this->checkPermission('PATCH', $object, ['collection' => new ObjectCollection($elements)], true);
         //we'll need to pass the $action and $data here aswell later
 
-        if ($this->dispatch('crud_pre_patch_object', $object, $options)) {
+        if ($this->dispatch('patch', 'pre', [$object, $options])) {
             foreach ($elements as $element) {
                 $object->$methodName($element);
             }
 
             $this->om->save($object);
-            $this->dispatch('crud_post_patch_object', $object, $options);
+            $this->dispatch('patch', 'post', [$object, $options]);
         }
     }
 
@@ -256,11 +256,11 @@ class Crud
         //add the options to pass on here
         $this->checkPermission('PATCH', $object, [], true);
         //we'll need to pass the $action and $data here aswell later
-        if ($this->dispatch('crud_pre_patch_object', $object, $options)) {
+        if ($this->dispatch('patch', 'pre', [$object, $options])) {
             $object->$methodName($data);
 
             $this->om->save($object);
-            $this->dispatch('crud_post_patch_object', $object, $options);
+            $this->dispatch('patch', 'post', [$object, $options]);
         }
     }
 
@@ -287,17 +287,19 @@ class Crud
      * We dispatch 2 events: a generic one and an other with a custom name.
      * Listen to what you want. Both have their uses.
      *
-     * @param string $name
-     * @param mixed  $object
-     * @param array  $options
+     * @param string $action (create, copy, delete, patch, update)
+     * @param string $when   (post, pre)
+     * @param array  $args
      *
      * @return bool
      */
-    public function dispatch($name, $object, array $options = [])
+    public function dispatch($action, $when, array $args)
     {
-        $generic = $this->dispatcher->dispatch($name, 'Crud', [$object, $options]);
-        $serializedName = $name.'_'.strtolower(str_replace('\\', '_', get_class($object)));
-        $specific = $this->dispatcher->dispatch($serializedName, 'Crud', [$object, $options]);
+        $name = 'crud_'.$when.'_'.$action.'_object';
+        $eventClass = ucfirst($action);
+        $generic = $this->dispatcher->dispatch($name, 'Crud\\'.$eventClass, $args);
+        $serializedName = $name.'_'.strtolower(str_replace('\\', '_', get_class($args[0])));
+        $specific = $this->dispatcher->dispatch($serializedName, 'Crud\\'.$eventClass, $args);
 
         return $generic->isAllowed() && $specific->isAllowed();
     }

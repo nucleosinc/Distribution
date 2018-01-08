@@ -4,7 +4,6 @@ import {connect} from 'react-redux'
 
 import Configuration from '#/main/core/library/Configuration/Configuration'
 import {t, transChoice, Translator} from '#/main/core/translation'
-import {generateUrl} from '#/main/core/api/router'
 
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 import {MODAL_CONFIRM, MODAL_URL, MODAL_USER_PICKER} from '#/main/core/layout/modal'
@@ -35,11 +34,11 @@ const WorkspacesPage = props =>
     name="workspaces.list"
     open={WorkspaceList.open}
     fetch={{
-      url: generateUrl('apiv2_workspace_list'),
+      url: ['apiv2_workspace_list'],
       autoload: true
     }}
     delete={{
-      url: generateUrl('apiv2_workspace_delete_bulk'),
+      url: ['apiv2_workspace_delete_bulk'],
       displayed: (workspaces) =>
         0 < workspaces.filter(workspace => workspace.code !== 'default_personal' && workspace.code !== 'default_workspace' ).length
     }}
