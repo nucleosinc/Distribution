@@ -14,7 +14,11 @@ namespace Claroline\CoreBundle\Controller\APINew;
 use Claroline\CoreBundle\Annotations\ApiMeta;
 use Claroline\CoreBundle\API\Options;
 use Claroline\CoreBundle\Controller\APINew\Model\HasOrganizationsTrait;
+use Claroline\CoreBundle\Entity\Workspace\Workspace;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -37,5 +41,28 @@ class WorkspaceController extends AbstractCrudController
           [Options::WORKSPACE_MODEL] : [];
 
         return parent::copyBulkAction($request, $class);
+    }
+
+    /**
+     * @Route(
+     *    "/{id}/managers",
+     *    name="apiv2_workspace_list_managers"
+     * )
+     * @Method("GET")
+     * @ParamConverter("workspace", options={"mapping": {"id": "uuid"}})
+     *
+     * @param Workspace $workspace
+     *
+     * @return JsonResponse
+     */
+    public function listManagersAction(Workspace $workspace)
+    {
+        $role = $this->container->get('claroline.manager.role_manager')->getManagerRole($workspace);
+
+        return new JsonResponse($this->finder->search(
+            'Claroline\CoreBundle\Entity\User',
+            ['hiddenFilters' => ['role' => $role->getUuid()]],
+            [Options::IS_RECURSIVE]
+        ));
     }
 }

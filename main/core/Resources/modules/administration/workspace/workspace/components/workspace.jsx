@@ -12,10 +12,10 @@ import {FormContainer} from '#/main/core/data/form/containers/form.jsx'
 import {FormSections, FormSection} from '#/main/core/layout/form/components/form-sections.jsx'
 import {select as formSelect} from '#/main/core/data/form/selectors'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
-
 import {actions} from '#/main/core/administration/workspace/workspace/actions'
 
 import {OrganizationList} from '#/main/core/administration/user/organization/components/organization-list.jsx'
+import {UserList} from '#/main/core/administration/user/user/components/user-list.jsx'
 
 const WorkspaceSaveAction = makeSaveAction('workspaces.current', formData => ({
   create: ['apiv2_workspace_create'],
@@ -34,8 +34,12 @@ const WorkspaceActions = () =>
     />
   </PageActions>
 
-const WorkspaceForm = props =>
-  <FormContainer
+const WorkspaceForm = (props) => {
+  const roleId = props.workspace.roles !== undefined ?
+    props.workspace.roles.find(role => role.name.indexOf('ROLE_WS_MANAGER') > -1).id:
+    null
+
+  return (<FormContainer
     level={3}
     name="workspaces.current"
     sections={[
@@ -96,7 +100,6 @@ const WorkspaceForm = props =>
     <FormSections
       level={3}
     >
-    {
       <FormSection
         id="workspace-organizations"
         icon="fa fa-fw fa-building"
@@ -124,16 +127,45 @@ const WorkspaceForm = props =>
           card={OrganizationList.card}
         />
       </FormSection>
-      }
+      <FormSection
+        id="workspace-managers"
+        icon="fa fa-fw fa-user"
+        title={t('managers')}
+        disabled={props.new}
+        actions={[
+          {
+            icon: 'fa fa-fw fa-plus',
+            label: t('add_managers'),
+            action: () => props.pickManagers(props.workspace)
+          }
+        ]}
+      >
+        <DataListContainer
+          name="workspaces.current.managers"
+          open={UserList.open}
+          fetch={{
+            url: ['apiv2_workspace_list_managers', {id: props.workspace.uuid}],
+            autoload: props.workspace.uuid && !props.new
+          }}
+          delete={{
+            url: ['apiv2_role_remove_users', {id: roleId}]
+          }}
+          definition={UserList.definition}
+          card={UserList.card}
+        />
+      </FormSection>
     </FormSections>
-  </FormContainer>
+  </FormContainer>)
+}
 
 WorkspaceForm.propTypes = {
   new: T.bool.isRequired,
   workspace: T.shape({
-    uuid: T.string
+    uuid: T.string,
+    roles: T.array
   }).isRequired,
-  pickOrganizations: T.func.isRequired
+  pickOrganizations: T.func.isRequired,
+  pickManagers: T.func.isRequired
 }
 
 const Workspace = connect(
@@ -155,6 +187,24 @@ const Workspace = connect(
           autoload: true
         },
         handleSelect: (selected) => dispatch(actions.addOrganizations(workspaceId, selected))
+      }))
+    },
+    pickManagers(workspace) {
+      //this is not a pretty way to find it but it's ok for now
+      const managerRole = workspace.roles.find(role => role.name.indexOf('ROLE_WS_MANAGER') > -1)
+
+      dispatch(modalActions.showModal(MODAL_DATA_PICKER, {
+        icon: 'fa fa-fw fa-user',
+        title: t('add_managers'),
+        confirmText: t('add'),
+        name: 'managers.picker',
+        definition: UserList.definition,
+        card: UserList.card,
+        fetch: {
+          url: ['apiv2_user_list'],
+          autoload: true
+        },
+        handleSelect: (selected) => dispatch(actions.addManagers(workspace.uuid, selected, managerRole.id))
       }))
     }
   })

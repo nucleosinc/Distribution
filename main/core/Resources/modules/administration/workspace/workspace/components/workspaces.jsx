@@ -4,9 +4,10 @@ import {connect} from 'react-redux'
 
 import Configuration from '#/main/core/library/Configuration/Configuration'
 import {t, transChoice, Translator} from '#/main/core/translation'
+import {generateUrl} from '#/main/core/api/router'
 
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
-import {MODAL_CONFIRM, MODAL_URL, MODAL_USER_PICKER} from '#/main/core/layout/modal'
+import {MODAL_CONFIRM, MODAL_URL} from '#/main/core/layout/modal'
 
 import {
   PageActions,
@@ -65,11 +66,11 @@ const WorkspacesPage = props =>
         icon: 'fa fa-fw fa-clone',
         label: t('duplicate_model'),
         action: (rows) => props.copyWorkspaces(rows, true)
-      }, {
-        icon: 'fa fa-fw fa-user',
-        label: t('manage_ws_managers'),
-        action: (rows) => props.manageWorkspaceManagers(rows[0]),
-        context: 'row'
+      },
+      {
+        icon: 'fa fa-fw fa-book',
+        label: t('open'),
+        action: (rows) => window.location.href = generateUrl('claro_workspace_open', {workspaceId: rows[0].id})
       }
     ]}
 
@@ -78,7 +79,6 @@ const WorkspacesPage = props =>
 
 WorkspacesPage.propTypes = {
   copyWorkspaces: T.func.isRequired,
-  manageWorkspaceManagers: T.func.isRequired,
   showModal: T.func.isRequired
 }
 
@@ -92,17 +92,6 @@ function mapDispatchToProps(dispatch) {
             workspace_list: workspaces.map(workspace => workspace.name).join(', ')
           }),
           handleConfirm: () => dispatch(actions.copyWorkspaces(workspaces, asModel))
-        })
-      )
-    },
-
-    manageWorkspaceManagers(workspace) {
-      dispatch(
-        modalActions.showModal(MODAL_USER_PICKER, {
-          title: t('manage_ws_managers'),
-          selected: workspace.managers,
-          handleSelect: (user) => dispatch(actions.addManager(workspace, user)),
-          handleRemove: (user) => dispatch(actions.removeManager(workspace, user))
         })
       )
     },
