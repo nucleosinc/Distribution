@@ -1,4 +1,4 @@
-import {bootstrap} from '#/main/core/utilities/app/bootstrap'
+import {bootstrap} from '#/main/core/scaffolding/bootstrap'
 
 import {reducer} from '#/main/core/administration/workspace/workspace/reducer'
 import {WorkspaceTool} from '#/main/core/administration/workspace/components/tool.jsx'
