@@ -57,8 +57,8 @@ actions.copyWorkspaces = (workspaces, isModel = 0) => ({
 
 actions.addManager = (workspace, user) => ({
   [API_REQUEST]: {
-    url: ['api_add_user_role', {user: user.id, role: getManagerRole(workspace).id}],
     request: {
+      url: generateUrl('apiv2_user_add_roles', {id: user.id}) + getDataQueryString([getManagerRole(workspace)]),
       method: 'PATCH'
     },
     success: (data, dispatch) => dispatch(actions.workspaceAddManager(workspace, user))
@@ -67,7 +67,7 @@ actions.addManager = (workspace, user) => ({
 
 actions.removeManager = (workspace, user) => ({
   [API_REQUEST]: {
-    url: ['api_remove_user_role', {user: user.id, role: getManagerRole(workspace).id}],
+    url: generateUrl('apiv2_user_remove_roles', {id: user.id}) + getDataQueryString([getManagerRole(workspace)]),
     request: {
       method: 'GET'
     },

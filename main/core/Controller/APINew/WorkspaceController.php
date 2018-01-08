@@ -33,7 +33,7 @@ class WorkspaceController extends AbstractCrudController
     public function copyBulkAction(Request $request, $class)
     {
         //add params for the copy here
-        $this->options['copyBulk'] = (int) $request->query->get('model') === 1 ?
+        $this->options['copyBulk'] = (int) $request->query->get('model') === 1 || $request->query->get('model') === 'true' ?
           [Options::WORKSPACE_MODEL] : [];
 
         return parent::copyBulkAction($request, $class);
