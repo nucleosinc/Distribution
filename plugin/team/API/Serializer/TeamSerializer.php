@@ -2,8 +2,8 @@
 
 namespace Claroline\TeamBundle\API\Serializer;
 
-use Claroline\CoreBundle\API\Serializer\RoleSerializer;
-use Claroline\CoreBundle\API\Serializer\UserSerializer;
+use Claroline\CoreBundle\API\Serializer\User\RoleSerializer;
+use Claroline\CoreBundle\API\Serializer\User\UserSerializer;
 use Claroline\TeamBundle\Entity\Team;
 use JMS\DiExtraBundle\Annotation as DI;
 

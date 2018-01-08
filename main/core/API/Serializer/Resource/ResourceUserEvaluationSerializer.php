@@ -2,7 +2,7 @@
 
 namespace Claroline\CoreBundle\API\Serializer\Resource;
 
-use Claroline\CoreBundle\API\Serializer\UserSerializer;
+use Claroline\CoreBundle\API\Serializer\User\UserSerializer;
 use Claroline\CoreBundle\Entity\Resource\ResourceUserEvaluation;
 use JMS\DiExtraBundle\Annotation as DI;
 
