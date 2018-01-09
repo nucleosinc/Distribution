@@ -2,3 +2,9 @@ claro_dropzone_bundle:
     resource: "@ClarolineDropZoneBundle/Controller/"
     type:     annotation
     prefix:   /
+claro_dropzone_api:
+    resource: "@ClarolineDropZoneBundle/Controller/API/"
+    prefix: apiv2
+    type: api
+    options:
+        expose: true

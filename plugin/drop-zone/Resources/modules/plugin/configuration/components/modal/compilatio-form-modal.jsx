@@ -17,7 +17,7 @@ const CompilatioFormModal = props =>
       {props.toolForm.data ?
         <form>
           <TextGroup
-            controlId="tool-name"
+            id="tool-name"
             label={t('name')}
             value={props.toolForm.data.name}
             onChange={value => props.updateToolForm('name', value)}
@@ -25,7 +25,7 @@ const CompilatioFormModal = props =>
             error={get(props.toolForm.errors, 'name')}
           />
           <TextGroup
-            controlId="tool-url"
+            id="tool-url"
             label={trans('url', {}, 'dropzone')}
             value={props.toolForm.data.data.url || ''}
             onChange={value => props.updateToolForm('data.url', value)}
@@ -33,7 +33,7 @@ const CompilatioFormModal = props =>
             error={get(props.toolForm.errors, 'url')}
           />
           <TextGroup
-            controlId="tool-key"
+            id="tool-key"
             label={trans('key', {}, 'dropzone')}
             value={props.toolForm.data.data.key || ''}
             onChange={value => props.updateToolForm('data.key', value)}

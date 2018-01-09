@@ -23,7 +23,6 @@ use Claroline\DropZoneBundle\Entity\DropzoneTool;
 use Claroline\DropZoneBundle\Manager\DropzoneManager;
 use Claroline\TeamBundle\Entity\Team;
 use JMS\DiExtraBundle\Annotation as DI;
-use JMS\SecurityExtraBundle\Annotation as SEC;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as EXT;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -697,56 +696,6 @@ class DropzoneController
         $data = empty($drop) ? null : $this->manager->serializeDrop($drop);
 
         return new JsonResponse($data);
-    }
-
-    /**
-     * @SEC\PreAuthorize("canOpenAdminTool('platform_parameters')")
-     * @EXT\Route("/tool/save", name="claro_dropzone_tool_save")
-     * @EXT\Method("POST")
-     * @EXT\ParamConverter("user", converter="current_user", options={"allowAnonymous"=false})
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
-     */
-    public function toolSaveAction(Request $request)
-    {
-        try {
-            $tool = $this->manager->saveTool(json_decode($request->getContent(), true));
-
-            return new JsonResponse(
-                $this->manager->serializeTool($tool)
-            );
-        } catch (\Exception $e) {
-            return new JsonResponse($e->getMessage(), 422);
-        }
-    }
-
-    /**
-     * @SEC\PreAuthorize("canOpenAdminTool('platform_parameters')")
-     * @EXT\Route("/tool/{id}/delete", name="claro_dropzone_tool_delete")
-     * @EXT\Method("DELETE")
-     * @EXT\ParamConverter(
-     *     "tool",
-     *     class="ClarolineDropZoneBundle:DropzoneTool",
-     *     options={"mapping": {"id": "uuid"}}
-     * )
-     * @EXT\ParamConverter("user", converter="current_user", options={"allowAnonymous"=false})
-     *
-     * @param DropzoneTool $tool
-     *
-     * @return JsonResponse
-     */
-    public function toolDeleteAction(DropzoneTool $tool)
-    {
-        try {
-            $serializedTool = $this->manager->serializeTool($tool);
-            $this->manager->deleteTool($tool);
-
-            return new JsonResponse($serializedTool);
-        } catch (\Exception $e) {
-            return new JsonResponse($e->getMessage(), 422);
-        }
     }
 
     /**

@@ -4,6 +4,7 @@ const toolTypes = [
   {
     type: compilatioValue,
     name: 'Compilatio',
+    label: 'Compilatio',
     icon: 'fa fa-copy'
   }
 ]

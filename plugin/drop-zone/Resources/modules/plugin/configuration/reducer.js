@@ -1,10 +1,8 @@
 import cloneDeep from 'lodash/cloneDeep'
 import set from 'lodash/set'
+
 import {makeReducer} from '#/main/core/utilities/redux'
 import {makeListReducer} from '#/main/core/data/list/reducer'
-
-// generic reducers
-import {reducer as apiReducer} from '#/main/core/api/reducer'
 import {reducer as modalReducer} from '#/main/core/layout/modal/reducer'
 
 import {validate} from '#/plugin/drop-zone/plugin/configuration/validator'
@@ -14,8 +12,7 @@ import {
   TOOL_FORM_RESET,
   TOOL_FORM_UPDATE,
   TOOL_FORM_VALIDATE,
-  TOOL_UPDATE,
-  TOOL_REMOVE
+  TOOL_UPDATE
 } from './actions'
 
 const toolFormReducer = makeReducer({
@@ -67,42 +64,18 @@ const toolsReducer = makeReducer({}, {
     }
 
     return tools
-  },
-  [TOOL_REMOVE]: (state, action) => {
-    const tools = cloneDeep(state)
-    const index = tools.findIndex(t => t.id === action.toolId)
-
-    if (index > -1) {
-      tools.splice(index, 1)
-    }
-
-    return tools
   }
 })
 
 const toolsTotalResultsReducer = makeReducer({}, {
   [TOOL_UPDATE]: (state) => {
-    return state + 1
-  },
-  [TOOL_REMOVE]: (state) => {
-    return state - 1
+    return state ? state : 1
   }
 })
 
-const toolsListReducer = makeListReducer(
-  {
-    data: toolsReducer,
-    totalResults: toolsTotalResultsReducer
-  },
-  {selectable: false, filterable: false, paginated: false, sortable: false}
-)
-
 const reducer = {
   toolForm: toolFormReducer,
-  tools: toolsListReducer,
-
-  // generic reducers
-  currentRequests: apiReducer,
+  tools: makeListReducer('tools', {}, {data: toolsReducer, totalResults: toolsTotalResultsReducer}),
   modal: modalReducer
 }
 

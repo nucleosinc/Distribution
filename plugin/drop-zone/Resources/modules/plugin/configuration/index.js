@@ -15,17 +15,7 @@ bootstrap(
   Tools,
 
   // app store configuration
-  reducer,
-
-  // transform data attributes for redux store
-  (initialData) => {
-    return {
-      tools: {
-        data: initialData.tools,
-        totalResults: initialData.tools.length
-      }
-    }
-  }
+  reducer
 )
 
 registerModals([

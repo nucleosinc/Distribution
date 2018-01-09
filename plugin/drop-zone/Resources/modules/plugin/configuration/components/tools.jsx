@@ -65,14 +65,6 @@ class Tools extends Component {
     }
   }
 
-  deleteTool(tool) {
-    this.props.showModal(MODAL_DELETE_CONFIRM, {
-      title: trans('delete_tool', {}, 'dropzone'),
-      question: trans('delete_tool_confirm_message', {title: tool.name}, 'dropzone'),
-      handleConfirm: () => this.props.deleteTool(tool.id)
-    })
-  }
-
   generateColumns() {
     const columns = []
 
@@ -130,13 +122,6 @@ class Tools extends Component {
       action: (rows) => this.editTool(rows[0]),
       context: 'row'
     })
-    dataListActions.push({
-      icon: 'fa fa-fw fa-trash',
-      label: trans('delete_tool', {}, 'dropzone'),
-      action: (rows) => this.deleteTool(rows[0]),
-      isDangerous: true,
-      context: 'row'
-    })
 
     return dataListActions
   }
@@ -146,6 +131,7 @@ class Tools extends Component {
       <PageContainer id="tools-container">
         <PageHeader
           title={trans('tools_management', {}, 'dropzone')}
+          key="tools-container-header"
         >
           <PageActions>
             <PageAction
@@ -157,12 +143,19 @@ class Tools extends Component {
             />
           </PageActions>
         </PageHeader>
-        <PageContent>
+        <PageContent key="tools-container-content">
           <DataListContainer
             name="tools"
             display={{
               current: listConstants.DISPLAY_TABLE,
               available: [listConstants.DISPLAY_TABLE]
+            }}
+            fetch={{
+              url: ['apiv2_dropzonetool_list'],
+              autoload: true
+            }}
+            delete={{
+              url: ['apiv2_dropzonetool_delete_bulk']
             }}
             definition={this.generateColumns()}
             filterColumns={true}
@@ -190,7 +183,6 @@ class Tools extends Component {
 Tools.propTypes = {
   tools: T.object,
   loadToolForm: T.func.isRequired,
-  deleteTool: T.func.isRequired,
   showModal: T.func.isRequired,
   fadeModal: T.func.isRequired
 }
@@ -204,7 +196,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     loadToolForm: (tool) => dispatch(actions.loadToolForm(tool)),
-    deleteTool: (toolId) => dispatch(actions.deleteTool(toolId)),
     showModal: (type, props) => dispatch(modalActions.showModal(type, props)),
     fadeModal: () => dispatch(modalActions.fadeModal())
   }

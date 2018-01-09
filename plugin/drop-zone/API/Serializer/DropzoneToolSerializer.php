@@ -44,15 +44,15 @@ class DropzoneToolSerializer
     }
 
     /**
-     * @param string $class
-     * @param array  $data
+     * Deserializes data into a Group entity.
+     *
+     * @param \stdClass    $data
+     * @param DropzoneTool $dropzoneTool
      *
      * @return DropzoneTool
      */
-    public function deserialize($class, $data)
+    public function deserialize($data, DropzoneTool $dropzoneTool = null)
     {
-        $dropzoneTool = $this->dropzoneToolRepo->findOneBy(['uuid' => $data['id']]);
-
         if (empty($dropzoneTool)) {
             $dropzoneTool = new DropzoneTool();
             $dropzoneTool->setUuid($data['id']);

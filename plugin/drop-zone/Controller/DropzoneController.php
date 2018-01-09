@@ -169,8 +169,6 @@ class DropzoneController extends Controller
      */
     public function pluginConfigureAction()
     {
-        return [
-            'tools' => $this->manager->getSerializedTools(),
-        ];
+        return [];
     }
 }
