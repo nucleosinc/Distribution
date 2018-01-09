@@ -4,7 +4,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {navigate} from '#/main/core/router'
 import {t, trans} from '#/main/core/translation'
-import {DataListContainer as DataList} from '#/main/core/layout/list/containers/data-list.jsx'
+import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
 
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
@@ -125,7 +125,7 @@ class Correctors extends Component {
         <h2>{trans('correctors_list', {}, 'dropzone')}</h2>
         {!this.props.corrections ?
           <span className="fa fa-fw fa-circle-o-notch fa-spin"></span> :
-          <DataList
+          <DataListContainer
             name="drops"
             definition={this.generateColumns(this.props)}
             filterColumns={true}

@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep'
 import set from 'lodash/set'
 import {makeReducer} from '#/main/core/utilities/redux'
-import {makeListReducer} from '#/main/core/layout/list/reducer'
+import {makeListReducer} from '#/main/core/data/list/reducer'
 
 // generic reducers
 import {reducer as apiReducer} from '#/main/core/api/reducer'

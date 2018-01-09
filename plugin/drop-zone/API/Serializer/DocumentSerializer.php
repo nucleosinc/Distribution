@@ -3,7 +3,7 @@
 namespace Claroline\DropZoneBundle\API\Serializer;
 
 use Claroline\CoreBundle\API\Serializer\Resource\ResourceNodeSerializer;
-use Claroline\CoreBundle\API\Serializer\UserSerializer;
+use Claroline\CoreBundle\API\Serializer\User\UserSerializer;
 use Claroline\CoreBundle\Persistence\ObjectManager;
 use Claroline\DropZoneBundle\Entity\Document;
 use JMS\DiExtraBundle\Annotation as DI;

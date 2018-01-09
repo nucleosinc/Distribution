@@ -5,7 +5,7 @@ import {PropTypes as T} from 'prop-types'
 import {t, trans} from '#/main/core/translation'
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 import {MODAL_DELETE_CONFIRM, MODAL_GENERIC_TYPE_PICKER} from '#/main/core/layout/modal'
-import {constants as listConstants} from '#/main/core/layout/list/constants'
+import {constants as listConstants} from '#/main/core/data/list/constants'
 import {
   PageContainer,
   PageHeader,
@@ -13,7 +13,7 @@ import {
   PageActions,
   PageAction
 } from '#/main/core/layout/page'
-import {DataListContainer as DataList} from '#/main/core/layout/list/containers/data-list.jsx'
+import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
 
 import {constants} from '#/plugin/drop-zone/plugin/configuration/constants'
 import {actions} from '#/plugin/drop-zone/plugin/configuration/actions'
@@ -158,7 +158,7 @@ class Tools extends Component {
           </PageActions>
         </PageHeader>
         <PageContent>
-          <DataList
+          <DataListContainer
             name="tools"
             display={{
               current: listConstants.DISPLAY_TABLE,

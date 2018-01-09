@@ -1,5 +1,6 @@
 import {bootstrap} from '#/main/core/utilities/app/bootstrap'
-import {registerModalTypes} from '#/main/core/layout/modal'
+import {registerModals} from '#/main/core/layout/modal'
+
 
 import {reducer} from '#/plugin/drop-zone/plugin/configuration/reducer'
 import {Tools} from '#/plugin/drop-zone/plugin/configuration/components/tools.jsx'
@@ -27,6 +28,6 @@ bootstrap(
   }
 )
 
-registerModalTypes([
+registerModals([
   ['MODAL_COMPILATIO_FORM', CompilatioFormModal]
 ])
