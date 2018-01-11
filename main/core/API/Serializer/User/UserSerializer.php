@@ -107,7 +107,7 @@ class UserSerializer
             'firstName' => $user->getFirstName(),
             'lastName' => $user->getLastName(),
             'username' => $user->getUsername(),
-            'picture' => $user->getPicture(),
+            'picture' => $this->serializePicture($user),
             'email' => $user->getMail(),
             'administrativeCode' => $user->getAdministrativeCode(),
         ];
@@ -151,6 +151,20 @@ class UserSerializer
         }
 
         return $serialized;
+    }
+
+    /**
+     * Serialize the user picture.
+     *
+     * @param User $user
+     */
+    private function serializePicture(User $user)
+    {
+        $file = $this->container->get('claroline.persistence.object_manager')
+          ->getRepository('Claroline\CoreBundle\Entity\File\PublicFile')
+          ->findOneByUrl($user->getPicture());
+
+        return $this->container->get('claroline.api.serializer')->serialize($file);
     }
 
     /**
@@ -281,6 +295,7 @@ class UserSerializer
         $this->sipe('plainPassword', 'setPlainPassword', $data, $object);
         $this->sipe('meta.enabled', 'setIsEnabled', $data, $object);
         $this->sipe('meta.locale', 'setLocale', $data, $object);
+        $this->sipe('picture.url', 'setPicture', $data, $object);
 
         if (isset($data['plainPassword'])) {
             $password = $this->container->get('security.encoder_factory')

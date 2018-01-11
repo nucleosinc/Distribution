@@ -84,6 +84,11 @@ const UserForm = props =>
             options: {
               onlyEnabled: true
             }
+          }, {
+            name: 'picture',
+            type: 'image',
+            label: t('picture'),
+            required: false
           }
         ]
       }

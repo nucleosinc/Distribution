@@ -8,6 +8,7 @@ import {DATETIME_TYPE, datetimeDefinition} from '#/main/core/data/types/datetime
 import {EMAIL_TYPE,    emailDefinition}    from '#/main/core/data/types/email'
 import {ENUM_TYPE,     enumDefinition}     from '#/main/core/data/types/enum'
 import {FILE_TYPE,     fileDefinition}     from '#/main/core/data/types/file'
+import {IMAGE_TYPE,    imageDefinition}    from '#/main/core/data/types/image'
 import {HTML_TYPE,     htmlDefinition}     from '#/main/core/data/types/html'
 import {IP_TYPE,       ipDefinition}       from '#/main/core/data/types/ip'
 import {LOCALE_TYPE,   localeDefinition}   from '#/main/core/data/types/locale'
@@ -28,6 +29,7 @@ registerType(DATETIME_TYPE, datetimeDefinition)
 registerType(EMAIL_TYPE,    emailDefinition)
 registerType(ENUM_TYPE,     enumDefinition)
 registerType(FILE_TYPE,     fileDefinition)
+registerType(IMAGE_TYPE,    imageDefinition)
 registerType(HTML_TYPE,     htmlDefinition)
 registerType(IP_TYPE,       ipDefinition)
 registerType(LOCALE_TYPE,   localeDefinition)
@@ -132,7 +134,7 @@ function validateDefinition(definition) {
 
 /**
  * Sets default values in a data type definition.
- * NB : this method does not mutate the original definition object.
+ * NB : this method does not mutate the fileoriginal definition object.
  *
  * @param {object} definition
  *
