@@ -89,6 +89,11 @@ const UserForm = props =>
             type: 'image',
             label: t('picture'),
             required: false
+          }, {
+            name: 'restrictions.accessibleUntil',
+            type: 'date',
+            label: t('expiration_date'),
+            required: false
           }
         ]
       }

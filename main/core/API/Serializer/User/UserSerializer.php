@@ -164,7 +164,9 @@ class UserSerializer
           ->getRepository('Claroline\CoreBundle\Entity\File\PublicFile')
           ->findOneByUrl($user->getPicture());
 
-        return $this->container->get('claroline.api.serializer')->serialize($file);
+        if ($file) {
+            return $this->container->get('claroline.api.serializer')->serialize($file);
+        }
     }
 
     /**
@@ -296,6 +298,7 @@ class UserSerializer
         $this->sipe('meta.enabled', 'setIsEnabled', $data, $object);
         $this->sipe('meta.locale', 'setLocale', $data, $object);
         $this->sipe('picture.url', 'setPicture', $data, $object);
+        $this->sipe('restrictions.accessibleUntil', 'setExpirationDate', $data, $object);
 
         if (isset($data['plainPassword'])) {
             $password = $this->container->get('security.encoder_factory')
