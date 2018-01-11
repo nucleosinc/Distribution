@@ -3,6 +3,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
+import {generateUrl} from '#/main/core/fos-js-router'
 import {navigate} from '#/main/core/router'
 import {t, trans} from '#/main/core/translation'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
@@ -133,6 +134,10 @@ class Drops extends Component {
         <h2>{trans('corrections_management', {}, 'dropzone')}</h2>
         <DataListContainer
           name="drops"
+          fetch={{
+            url: generateUrl('claro_dropzone_drops_search', {id: this.props.dropzone.id}),
+            autoload: true
+          }}
           definition={this.generateColumns(this.props)}
           filterColumns={true}
           actions={this.generateActions(this.props)}

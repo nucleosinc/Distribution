@@ -1,4 +1,5 @@
 import {makeReducer} from '#/main/core/utilities/redux'
+import {makePageReducer} from '#/main/core/layout/page/reducer'
 
 // generic reducers
 import {reducer as apiReducer} from '#/main/core/api/reducer'
@@ -11,7 +12,7 @@ import {reducer as playerReducer} from '#/plugin/drop-zone/resources/dropzone/pl
 import {reducer as correctionReducer} from '#/plugin/drop-zone/resources/dropzone/correction/reducer'
 import {reducer as configurationReducer} from '#/plugin/drop-zone/plugin/configuration/reducer'
 
-const reducer = {
+const reducer = makePageReducer({}, {
   user: makeReducer({}, {}),
   dropzone: editorReducer.dropzone,
   dropzoneForm: editorReducer.dropzoneForm,
@@ -31,7 +32,7 @@ const reducer = {
   currentRequests: apiReducer,
   modal: modalReducer,
   resourceNode: resourceReducer
-}
+})
 
 export {
   reducer

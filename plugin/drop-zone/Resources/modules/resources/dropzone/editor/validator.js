@@ -32,54 +32,54 @@ function isValid(dropzone) {
 function validate(dropzone) {
   const errors = {}
 
-  setIfError(errors, 'instruction', notBlank(dropzone.display.instruction))
-  setIfError(errors, 'criteriaTotal', notBlank(dropzone.parameters.criteriaTotal))
-  setIfError(errors, 'scoreMax', notBlank(dropzone.parameters.scoreMax))
-  setIfError(errors, 'scoreToPass', notBlank(dropzone.parameters.scoreToPass))
+  setIfError(errors, 'display.instruction', notBlank(dropzone.display.instruction))
+  setIfError(errors, 'parameters.criteriaTotal', notBlank(dropzone.parameters.criteriaTotal))
+  setIfError(errors, 'parameters.scoreMax', notBlank(dropzone.parameters.scoreMax))
+  setIfError(errors, 'parameters.scoreToPass', notBlank(dropzone.parameters.scoreToPass))
 
   if (!errors['criteriaTotal']) {
-    setIfError(errors, 'criteriaTotal', number(dropzone.parameters.criteriaTotal))
+    setIfError(errors, 'parameters.criteriaTotal', number(dropzone.parameters.criteriaTotal))
   }
   if (!errors['scoreMax']) {
-    setIfError(errors, 'scoreMax', number(dropzone.parameters.scoreMax))
+    setIfError(errors, 'parameters.scoreMax', number(dropzone.parameters.scoreMax))
   }
   if (!errors['scoreToPass']) {
-    setIfError(errors, 'scoreToPass', number(dropzone.parameters.scoreToPass))
+    setIfError(errors, 'parameters.scoreToPass', number(dropzone.parameters.scoreToPass))
   }
   if (!errors['criteriaTotal']) {
-    setIfError(errors, 'criteriaTotal', greaterOrEqual(dropzone.parameters.criteriaTotal, 2))
+    setIfError(errors, 'parameters.criteriaTotal', greaterOrEqual(dropzone.parameters.criteriaTotal, 2))
   }
   if (!errors['scoreMax']) {
-    setIfError(errors, 'scoreMax', greaterOrEqual(dropzone.parameters.scoreMax, 0))
+    setIfError(errors, 'parameters.scoreMax', greaterOrEqual(dropzone.parameters.scoreMax, 0))
   }
   if (!errors['scoreMax'] && !errors['scoreToPass']) {
-    setIfError(errors, 'scoreToPass', between(dropzone.parameters.scoreToPass, 0, dropzone.parameters.scoreMax))
+    setIfError(errors, 'parameters.scoreToPass', between(dropzone.parameters.scoreToPass, 0, dropzone.parameters.scoreMax))
   }
   if (dropzone.parameters.criteriaEnabled) {
     if (dropzone.criteria.length === 0) {
-      set(errors, 'criteriaEnabled', trans('no_criterion_defined', {}, 'dropzone'))
+      set(errors, 'parameters.criteriaEnabled', trans('no_criterion_defined', {}, 'dropzone'))
     }
-    dropzone.criteria.forEach(c => setIfError(errors, `criterion.${c.id}`, notBlank(c.instruction)))
+    dropzone.criteria.forEach(c => setIfError(errors, `criteria.${c.id}`, notBlank(c.instruction)))
   }
   if (!dropzone.parameters.manualPlanning) {
-    setIfError(errors, 'dropStartDate', notBlank(dropzone.parameters.dropStartDate))
-    setIfError(errors, 'dropEndDate', notBlank(dropzone.parameters.dropEndDate))
+    setIfError(errors, 'parameters.dropStartDate', notBlank(dropzone.parameters.dropStartDate))
+    setIfError(errors, 'parameters.dropEndDate', notBlank(dropzone.parameters.dropEndDate))
 
     if (!errors['dropStartDate'] && !errors['dropEndDate']) {
-      setIfError(errors, 'dropEndDate', dateAfter(dropzone.parameters.dropEndDate, dropzone.parameters.dropStartDate))
+      setIfError(errors, 'parameters.dropEndDate', dateAfter(dropzone.parameters.dropEndDate, dropzone.parameters.dropStartDate))
     }
     if (dropzone.parameters.peerReview) {
-      setIfError(errors, 'reviewStartDate', notBlank(dropzone.parameters.reviewStartDate))
-      setIfError(errors, 'reviewEndDate', notBlank(dropzone.parameters.reviewEndDate))
+      setIfError(errors, 'parameters.reviewStartDate', notBlank(dropzone.parameters.reviewStartDate))
+      setIfError(errors, 'parameters.reviewEndDate', notBlank(dropzone.parameters.reviewEndDate))
 
       if (!errors['reviewStartDate'] && !errors['reviewEndDate']) {
-        setIfError(errors, 'reviewEndDate', dateAfter(dropzone.parameters.reviewEndDate, dropzone.parameters.reviewStartDate))
+        setIfError(errors, 'parameters.reviewEndDate', dateAfter(dropzone.parameters.reviewEndDate, dropzone.parameters.reviewStartDate))
       }
     }
   }
   if (dropzone.display.displayNotationMessageToLearners) {
-    setIfError(errors, 'successMessage', notBlank(dropzone.display.successMessage))
-    setIfError(errors, 'failMessage', notBlank(dropzone.display.failMessage))
+    setIfError(errors, 'display.successMessage', notBlank(dropzone.display.successMessage))
+    setIfError(errors, 'display.failMessage', notBlank(dropzone.display.failMessage))
   }
 
   return errors

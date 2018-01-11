@@ -1,6 +1,6 @@
 import {makeActionCreator} from '#/main/core/utilities/redux'
 import {generateUrl} from '#/main/core/fos-js-router'
-import {REQUEST_SEND} from '#/main/core/api/actions'
+import {API_REQUEST} from '#/main/core/api/actions'
 
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
 import {actions as playerActions} from '#/plugin/drop-zone/resources/dropzone/player/actions'
@@ -21,7 +21,7 @@ actions.updateDrop = makeActionCreator(DROP_UPDATE, 'drop')
 actions.loadDrops = makeActionCreator(DROPS_LOAD, 'drops')
 
 actions.fetchDrops = (dropzoneId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_drops_search', {id: dropzoneId}),
     request: {
       method: 'GET'
@@ -53,7 +53,7 @@ actions.fetchDrop = (dropId, type = 'current') => (dispatch, getState) => {
     }
   } else {
     dispatch({
-      [REQUEST_SEND]: {
+      [API_REQUEST]: {
         url: generateUrl('claro_dropzone_drop_fetch', {id: dropId}),
         request: {
           method: 'GET'
@@ -77,7 +77,7 @@ actions.loadCorrectorDrop = makeActionCreator(CORRECTOR_DROP_LOAD, 'drop')
 actions.resetCorrectorDrop = makeActionCreator(CORRECTOR_DROP_RESET)
 
 actions.fetchCorrections = (dropzoneId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_corrections_fetch', {id: dropzoneId}),
     request: {
       method: 'GET'
@@ -93,7 +93,7 @@ actions.updateCorrection = makeActionCreator(CORRECTION_UPDATE, 'correction')
 actions.removeCorrection = makeActionCreator(CORRECTION_REMOVE, 'correctionId')
 
 actions.saveCorrection = (correction) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_save', {id: correction.drop}),
     request: {
       method: 'POST',
@@ -106,7 +106,7 @@ actions.saveCorrection = (correction) => ({
 })
 
 actions.submitCorrection = (correctionId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_submit', {id: correctionId}),
     request: {
       method: 'PUT'
@@ -118,7 +118,7 @@ actions.submitCorrection = (correctionId) => ({
 })
 
 actions.switchCorrectionValidation = (correctionId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_validation_switch', {id: correctionId}),
     request: {
       method: 'PUT'
@@ -130,7 +130,7 @@ actions.switchCorrectionValidation = (correctionId) => ({
 })
 
 actions.deleteCorrection = (correctionId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_delete', {id: correctionId}),
     request: {
       method: 'DELETE'
@@ -142,7 +142,7 @@ actions.deleteCorrection = (correctionId) => ({
 })
 
 actions.denyCorrection = (correctionId, comment) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_deny', {id: correctionId}),
     request: {
       method: 'PUT',
@@ -155,7 +155,7 @@ actions.denyCorrection = (correctionId, comment) => ({
 })
 
 actions.executeTool = (toolId, documentId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_tool_execute', {tool: toolId, document: documentId}),
     request: {
       method: 'POST'
@@ -167,7 +167,7 @@ actions.executeTool = (toolId, documentId) => ({
 })
 
 actions.unlockDrop = (dropId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_drop_unlock', {id: dropId}),
     request: {
       method: 'PUT'
@@ -179,7 +179,7 @@ actions.unlockDrop = (dropId) => ({
 })
 
 actions.unlockDropUser = (dropId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_drop_unlock_user', {id: dropId}),
     request: {
       method: 'PUT'
@@ -191,7 +191,7 @@ actions.unlockDropUser = (dropId) => ({
 })
 
 actions.cancelDropSubmission = (dropId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_drop_submission_cancel', {id: dropId}),
     request: {
       method: 'PUT'

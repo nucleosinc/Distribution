@@ -7,19 +7,19 @@ const STATE_PEER_REVIEW = 3
 const STATE_ALLOW_DROP_AND_PEER_REVIEW = 4
 const STATE_WAITING_FOR_PEER_REVIEW = 5
 
-const TEACHER_PLANNING_STATES = [
-  {value: STATE_NOT_STARTED, label: trans('state_not_started', {}, 'dropzone')},
-  {value: STATE_ALLOW_DROP, label: trans('state_allow_drop', {}, 'dropzone')},
-  {value: STATE_FINISHED, label: trans('state_finished', {}, 'dropzone')}
-]
+const TEACHER_PLANNING_STATES = {
+  [STATE_NOT_STARTED]: trans('state_not_started', {}, 'dropzone'),
+  [STATE_ALLOW_DROP]: trans('state_allow_drop', {}, 'dropzone'),
+  [STATE_FINISHED]: trans('state_finished', {}, 'dropzone')
+}
 
-const PEER_PLANNING_STATES = [
-  {value: STATE_NOT_STARTED, label: trans('state_not_started', {}, 'dropzone')},
-  {value: STATE_ALLOW_DROP, label: trans('state_allow_drop', {}, 'dropzone')},
-  {value: STATE_PEER_REVIEW, label: trans('state_peer_review', {}, 'dropzone')},
-  {value: STATE_ALLOW_DROP_AND_PEER_REVIEW, label: trans('state_allow_drop_and_peer_review', {}, 'dropzone')},
-  {value: STATE_FINISHED, label: trans('state_finished', {}, 'dropzone')}
-]
+const PEER_PLANNING_STATES = {
+  [STATE_NOT_STARTED]: trans('state_not_started', {}, 'dropzone'),
+  [STATE_ALLOW_DROP]: trans('state_allow_drop', {}, 'dropzone'),
+  [STATE_PEER_REVIEW]: trans('state_peer_review', {}, 'dropzone'),
+  [STATE_ALLOW_DROP_AND_PEER_REVIEW]: trans('state_allow_drop_and_peer_review', {}, 'dropzone'),
+  [STATE_FINISHED]: trans('state_finished', {}, 'dropzone')
+}
 
 const DOCUMENT_TYPES = {
   file : {value: 0, label: trans('uploaded_files', {}, 'dropzone')},
@@ -38,20 +38,10 @@ const DOCUMENT_TYPES_NAMES = [
 const DROP_TYPE_USER = 0
 const DROP_TYPE_TEAM = 1
 
-const DROP_TYPES = [
-  {value: DROP_TYPE_USER, label: trans('drop_type_user', {}, 'dropzone')},
-  {value: DROP_TYPE_TEAM, label: trans('drop_type_team', {}, 'dropzone')}
-]
-
-const CORRECTION_TYPES = [
-  {value: 'teacher', label: trans('teacher_correction_info', {}, 'dropzone')},
-  {value: 'peer', label: trans('peer_correction_info', {}, 'dropzone')}
-]
-
-const PLANNING_TYPES = [
-  {value: 'manual', label: trans('manually', {}, 'dropzone')},
-  {value: 'date', label: trans('by_dates', {}, 'dropzone')}
-]
+const DROP_TYPES = {
+  [DROP_TYPE_USER]: trans('drop_type_user', {}, 'dropzone'),
+  [DROP_TYPE_TEAM]: trans('drop_type_team', {}, 'dropzone')
+}
 
 const EVALUATION_STATUS_PASSED = 'passed'
 const EVALUATION_STATUS_FAILED = 'failed'
@@ -72,8 +62,6 @@ export const constants = {
   DROP_TYPE_USER,
   DROP_TYPE_TEAM,
   DROP_TYPES,
-  CORRECTION_TYPES,
-  PLANNING_TYPES,
   DOCUMENT_TYPES,
   DOCUMENT_TYPES_NAMES,
   EVALUATION_STATUS_PASSED,

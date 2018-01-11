@@ -76,7 +76,6 @@ const Menu = props =>
 
     {props.dropzone.display.instruction &&
       <div id="instruction-container">
-        <hr/>
         <h2>{trans('instructions', {}, 'dropzone')}</h2>
         <HtmlText>
           {props.dropzone.display.instruction}

@@ -47,7 +47,6 @@ class ResourceEvaluationManager
         $this->resourceEvaluationRepo = $om->getRepository('ClarolineCoreBundle:Resource\ResourceEvaluation');
     }
 
-
     public function getResourceUserEvaluation(ResourceNode $node, User $user, $withCreation = true)
     {
         $evaluation = $this->resourceUserEvaluationRepo->findOneBy(['resourceNode' => $node, 'user' => $user]);

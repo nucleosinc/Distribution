@@ -1,6 +1,6 @@
 import {makeActionCreator} from '#/main/core/utilities/redux'
 import {generateUrl} from '#/main/core/fos-js-router'
-import {REQUEST_SEND} from '#/main/core/api/actions'
+import {API_REQUEST} from '#/main/core/api/actions'
 import {navigate} from '#/main/core/router'
 
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
@@ -28,7 +28,7 @@ actions.initializeMyDrop = (teamId = null) => (dispatch, getState) => {
 
   if (dropzone.parameters.dropType === constants.DROP_TYPE_USER) {
     dispatch({
-      [REQUEST_SEND]: {
+      [API_REQUEST]: {
         url: generateUrl('claro_dropzone_my_drop_initialize', {id: dropzone.id}),
         request: {
           method: 'POST'
@@ -41,7 +41,7 @@ actions.initializeMyDrop = (teamId = null) => (dispatch, getState) => {
     })
   } else if (dropzone.parameters.dropType === constants.DROP_TYPE_TEAM && teamId) {
     dispatch({
-      [REQUEST_SEND]: {
+      [API_REQUEST]: {
         url: generateUrl('claro_dropzone_my_team_drop_initialize', {id: dropzone.id, teamId: teamId}),
         request: {
           method: 'POST'
@@ -67,7 +67,7 @@ actions.saveDocument = (dropType, dropData) => (dispatch, getState) => {
   }
 
   dispatch({
-    [REQUEST_SEND]: {
+    [API_REQUEST]: {
       url: generateUrl('claro_dropzone_documents_add', {id: myDropId, type: dropType}),
       request: {
         method: 'POST',
@@ -81,7 +81,7 @@ actions.saveDocument = (dropType, dropData) => (dispatch, getState) => {
 }
 
 actions.deleteDocument = (documentId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_document_delete', {id: documentId}),
     request: {
       method: 'DELETE'
@@ -96,7 +96,7 @@ actions.renderMyDrop = () => (dispatch, getState) => {
   const myDropId = select.myDropId(getState())
 
   dispatch({
-    [REQUEST_SEND]: {
+    [API_REQUEST]: {
       url: generateUrl('claro_dropzone_drop_submit', {id: myDropId}),
       request: {
         method: 'PUT'
@@ -119,7 +119,7 @@ actions.fetchPeerDrop = () => (dispatch, getState) => {
 
     if (dropzone.parameters.dropType === constants.DROP_TYPE_USER) {
       dispatch({
-        [REQUEST_SEND]: {
+        [API_REQUEST]: {
           url: generateUrl('claro_dropzone_peer_drop_fetch', {id: dropzone.id}),
           request: {
             method: 'GET'
@@ -133,7 +133,7 @@ actions.fetchPeerDrop = () => (dispatch, getState) => {
       })
     } else if (dropzone.parameters.dropType === constants.DROP_TYPE_TEAM && myTeamId) {
       dispatch({
-        [REQUEST_SEND]: {
+        [API_REQUEST]: {
           url: generateUrl('claro_dropzone_team_peer_drop_fetch', {id: dropzone.id, teamId: myTeamId}),
           request: {
             method: 'GET'
@@ -154,7 +154,7 @@ actions.resetPeerDrop = makeActionCreator(PEER_DROP_RESET)
 actions.incPeerDrop = makeActionCreator(PEER_DROPS_INC)
 
 actions.submitCorrection = (correctionId) => ({
-  [REQUEST_SEND]: {
+  [API_REQUEST]: {
     url: generateUrl('claro_dropzone_correction_submit', {id: correctionId}),
     request: {
       method: 'PUT'

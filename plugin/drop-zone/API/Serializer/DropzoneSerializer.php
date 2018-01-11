@@ -49,18 +49,13 @@ class DropzoneSerializer
     }
 
     /**
-     * @param string $class
-     * @param array  $data
+     * @param array    $data
+     * @param Dropzone $dropzone
      *
      * @return Dropzone
      */
-    public function deserialize($class, $data)
+    public function deserialize($data, Dropzone $dropzone)
     {
-        if (isset($data['id']) && $data['id']) {
-            $dropzone = $this->dropzoneRepo->findOneBy(['uuid' => $data['id']]);
-        }
-        $dropzone = $dropzone ?: new Dropzone();
-
         if (isset($data['parameters'])) {
             if (isset($data['parameters']['editionState'])) {
                 $dropzone->setEditionState($data['parameters']['editionState']);

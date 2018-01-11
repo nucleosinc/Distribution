@@ -1,7 +1,6 @@
 import {bootstrap} from '#/main/core/utilities/app/bootstrap'
 import {registerModals} from '#/main/core/layout/modal'
 
-
 import {reducer} from '#/plugin/drop-zone/plugin/configuration/reducer'
 import {Tools} from '#/plugin/drop-zone/plugin/configuration/components/tools.jsx'
 import {CompilatioFormModal} from '#/plugin/drop-zone/plugin/configuration/components/modal/compilatio-form-modal.jsx'

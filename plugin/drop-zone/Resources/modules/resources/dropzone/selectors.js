@@ -1,10 +1,8 @@
-import isEmpty from 'lodash/isEmpty'
 import {createSelector} from 'reselect'
 
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 
 const user = state => state.user
-
 const userId = createSelector(
   [user],
   (user) => user && user.id ? user.id : null
@@ -13,64 +11,9 @@ const userId = createSelector(
 const userEvaluation = state => state.userEvaluation
 
 const dropzone = state => state.dropzone
-
 const dropzoneId = createSelector(
   [dropzone],
   (dropzone) => dropzone.id
-)
-const dropzoneParameters = createSelector(
-  [dropzone],
-  (dropzone) => dropzone.parameters
-)
-const dropzoneDisplay = createSelector(
-  [dropzone],
-  (dropzone) => dropzone.display
-)
-const dropzoneNotifications = createSelector(
-  [dropzone],
-  (dropzone) => dropzone.notifications
-)
-
-const dropzoneForm = state => state.dropzoneForm
-const formHasPendingChanges = createSelector(
-  [dropzoneForm],
-  (dropzoneForm) => dropzoneForm.pendingChanges
-)
-const formIsOpened = createSelector(
-  [dropzoneForm],
-  (dropzoneForm) => !!dropzoneForm.data
-)
-const formData = createSelector(
-  [dropzoneForm],
-  (dropzoneForm) => dropzoneForm.data
-)
-const formParametersData = createSelector(
-  [formData],
-  (formData) => formData.parameters
-)
-const formDisplayData = createSelector(
-  [formData],
-  (formData) => formData.display
-)
-const formNotificationsData = createSelector(
-  [formData],
-  (formData) => formData.notifications
-)
-const formCriteriaData = createSelector(
-  [formData],
-  (formData) => formData.criteria
-)
-const formErrors = createSelector(
-  [dropzoneForm],
-  (dropzoneForm) => dropzoneForm.errors
-)
-const formValidating = createSelector(
-  [dropzoneForm],
-  (dropzoneForm) => dropzoneForm.validating
-)
-const formValid = createSelector(
-  [formErrors],
-  (formErrors) => isEmpty(formErrors)
 )
 
 const myDrop = state => state.myDrop
@@ -174,19 +117,6 @@ export const select = {
   userEvaluation,
   dropzone,
   dropzoneId,
-  dropzoneParameters,
-  dropzoneDisplay,
-  dropzoneNotifications,
-  formHasPendingChanges,
-  formIsOpened,
-  formData,
-  formParametersData,
-  formDisplayData,
-  formNotificationsData,
-  formCriteriaData,
-  formErrors,
-  formValidating,
-  formValid,
   myDrop,
   myDrops,
   myDropId,

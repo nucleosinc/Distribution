@@ -422,11 +422,7 @@ class DropzoneController
             $params['filters'] = [];
         }
         $params['filters']['dropzone'] = $dropzone->getUuid();
-
-        $data = $this->finder->search(
-            'Claroline\DropZoneBundle\Entity\Drop',
-            $params
-        );
+        $data = $this->finder->search('Claroline\DropZoneBundle\Entity\Drop', $params);
 
         return new JsonResponse($data, 200);
     }

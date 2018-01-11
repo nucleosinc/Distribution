@@ -1,6 +1,5 @@
 import {bootstrap} from '#/main/core/utilities/app/bootstrap'
-import {registerModalTypes} from '#/main/core/layout/modal'
-import {generateUrl} from '#/main/core/fos-js-router'
+import {registerModals} from '#/main/core/layout/modal'
 
 import {reducer} from '#/plugin/drop-zone/resources/dropzone/reducer'
 import {DropzoneResource} from '#/plugin/drop-zone/resources/dropzone/components/resource.jsx'
@@ -26,11 +25,6 @@ bootstrap(
       myDrop: initialData.myDrop,
       peerDrop: initialData.peerDrop,
       nbCorrections: initialData.nbCorrections,
-      drops: {
-        data: [],
-        totalResults: 0,
-        fetchUrl: generateUrl('claro_dropzone_drops_search', {id: initialData.dropzone.id})
-      },
       tools: {
         data: initialData.tools,
         totalResults: initialData.tools.length
@@ -42,6 +36,6 @@ bootstrap(
   }
 )
 
-registerModalTypes([
+registerModals([
   ['MODAL_CORRECTION', CorrectionModal]
 ])

@@ -1,428 +1,438 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 import get from 'lodash/get'
-import moment from 'moment'
 
 import {t, trans} from '#/main/core/translation'
 import {select as resourceSelect} from '#/main/core/layout/resource/selectors'
-import {ActivableSet} from '#/main/core/layout/form/components/fieldset/activable-set.jsx'
+import {select as formSelect} from '#/main/core/data/form/selectors'
+import {FormContainer} from '#/main/core/data/form/containers/form.jsx'
 import {FormSections, FormSection} from '#/main/core/layout/form/components/form-sections.jsx'
-import {CheckGroup} from '#/main/core/layout/form/components/group/check-group.jsx'
 import {HtmlGroup}  from '#/main/core/layout/form/components/group/html-group.jsx'
-import {NumberGroup}  from '#/main/core/layout/form/components/group/number-group.jsx'
-import {RadioGroup} from '#/main/core/layout/form/components/group/radio-group.jsx'
-import {DatetimeGroup} from '#/main/core/layout/form/components/group/datetime-group.jsx'
+import {HtmlText} from '#/main/core/layout/components/html-text.jsx'
 
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
 import {actions} from '#/plugin/drop-zone/resources/dropzone/editor/actions'
-import {Criteria} from '#/plugin/drop-zone/resources/dropzone/editor/components/criteria.jsx'
 
-const InstructionsSection = props =>
-  <FormSection
-    id="instructions-section"
-    title={trans('instructions', {}, 'dropzone')}
-    {...props}
-  >
-    <HtmlGroup
-      controlId="instruction"
-      label={trans('instruction', {}, 'dropzone')}
-      content={props.formData.display.instruction || ''}
-      onChange={value => props.updateForm('display.instruction', value)}
-      minRows={3}
-      hideLabel={true}
-      warnOnly={!props.validating}
-      error={get(props.errors, 'instruction')}
-    />
-  </FormSection>
+class Criterion extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      editMode: !props.criterion.instruction
+    }
+  }
 
-InstructionsSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
+  render() {
+    return (
+      <div className="criterion-row">
+        {this.state.editMode ?
+          <HtmlGroup
+            id={`criterion-textarea-${this.props.criterion.id}`}
+            className="criterion-content"
+            label="no_label"
+            hideLabel={true}
+            value={this.props.criterion.instruction || ''}
+            onChange={value => this.props.handleChange(this.props.criterion.id, 'instruction', value)}
+            minRows={3}
+            warnOnly={!this.props.validating}
+            error={get(this.props.errors, `criteria.${this.props.criterion.id}`)}
+          /> :
+          <HtmlText className="criterion-content">
+            {this.props.criterion.instruction}
+          </HtmlText>
+        }
+        <div className="criterion-btn-group">
+          <button
+            className="btn btn-default btn-sm"
+            type="button"
+            disabled={!this.props.criterion.instruction}
+            onClick={() => this.setState({editMode: !this.state.editMode})}
+          >
+            <span className="fa fa-fw fa-pencil"/>
+          </button>
+          <button
+            className="btn btn-danger btn-sm"
+            type="button"
+            onClick={() => this.props.handleDelete(this.props.criterion.id)}
+          >
+            <span className="fa fa-fw fa-trash"/>
+          </button>
+        </div>
+      </div>
+    )
+  }
+}
+
+Criterion.propTypes = {
+  dropzone: T.shape(DropzoneType.propTypes),
+  criterion: T.shape({
+    id: T.string.isRequired,
+    instruction: T.string
+  }).isRequired,
   errors: T.object,
   validating: T.bool,
-  updateForm: T.func.isRequired
+  handleChange: T.func.isRequired,
+  handleDelete: T.func.isRequired
 }
 
-const DocumentsSection = props =>
-  <FormSection
-    id="documents-section"
-    title={trans('allowed_document_types', {}, 'dropzone')}
-    {...props}
-  >
-    <p>{trans('allowed_document_types_info', {}, 'dropzone')}</p>
-    <CheckGroup
-      checkId="upload-enabled-chk"
-      checked={props.formData.parameters.uploadEnabled}
-      label={trans('uploaded_files', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.uploadEnabled', checked)}
-    />
-    <CheckGroup
-      checkId="rich-text-enabled-chk"
-      checked={props.formData.parameters.richTextEnabled}
-      label={trans('rich_text_online_edition', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.richTextEnabled', checked)}
-    />
-    <CheckGroup
-      checkId="workspace-resource-enabled-chk"
-      checked={props.formData.parameters.workspaceResourceEnabled}
-      label={trans('workspace_resources', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.workspaceResourceEnabled', checked)}
-    />
-    <CheckGroup
-      checkId="url-enabled-chk"
-      checked={props.formData.parameters.urlEnabled}
-      label={trans('url_info', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.urlEnabled', checked)}
-    />
-  </FormSection>
+const Criteria = props =>
+  <div>
+    <button
+      className="btn btn-primary"
+      type="button"
+      onClick={() => props.addCriterion(props.dropzone.id)}
+    >
+      <span className="fa fa-fw fa-plus"></span>
+      {trans('add_criterion', {}, 'dropzone')}
+    </button>
+    {props.dropzone.criteria && props.dropzone.criteria.map(c =>
+      <Criterion
+        key={`criterion-${c.id}`}
+        dropzone={props.dropzone}
+        criterion={c}
+        validating={props.validating}
+        errors={props.errors}
+        handleChange={props.updateCriterion}
+        handleDelete={props.removeCriterion}
+      />
+    )}
+  </div>
 
-DocumentsSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
-  updateForm: T.func.isRequired
-}
-
-const DropCorrectionSection = props =>
-  <FormSection
-    id="drop-correction-section"
-    title={trans('drop_and_correction_type', {}, 'dropzone')}
-    {...props}
-  >
-    <RadioGroup
-      controlId="drop-type"
-      label={trans('drop_type', {}, 'dropzone')}
-      options={constants.DROP_TYPES}
-      checkedValue={props.formData.parameters.dropType}
-      onChange={value => props.updateForm('parameters.dropType', parseInt(value))}
-    />
-    <RadioGroup
-      controlId="peer-review"
-      label={trans('correction_type_info', {}, 'dropzone')}
-      options={constants.CORRECTION_TYPES}
-      checkedValue={props.formData.parameters.peerReview ? 'peer' : 'teacher'}
-      onChange={value => {
-        const peerReview = value === 'peer'
-        props.updateForm('parameters.peerReview', peerReview)
-
-        if (peerReview) {
-          props.updateForm('parameters.criteriaEnabled', true)
-        }
-      }}
-    />
-    {props.formData.parameters.peerReview &&
-      <div>
-        <NumberGroup
-          controlId="expected-correction-total"
-          label={trans('expected_correction_total_label', {}, 'dropzone')}
-          value={props.formData.parameters.expectedCorrectionTotal}
-          min={1}
-          onChange={value => props.updateForm('parameters.expectedCorrectionTotal', parseInt(value))}
-        />
-        <CheckGroup
-          checkId="display-notation-chk"
-          checked={props.formData.display.displayCorrectionsToLearners}
-          label={trans('display_corrections_to_learners', {}, 'dropzone')}
-          onChange={checked => props.updateForm('display.displayCorrectionsToLearners', checked)}
-        />
-        {props.formData.display.displayCorrectionsToLearners &&
-          <CheckGroup
-            checkId="correction-denial-chk"
-            checked={props.formData.parameters.correctionDenialEnabled}
-            label={trans('correction_denial_label', {}, 'dropzone')}
-            onChange={checked => props.updateForm('parameters.correctionDenialEnabled', checked)}
-          />
-        }
-      </div>
-    }
-  </FormSection>
-
-DropCorrectionSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
-  updateForm: T.func.isRequired
+Criteria.propTypes = {
+  dropzone: T.shape(DropzoneType.propTypes),
+  errors: T.object,
+  validating: T.bool,
+  addCriterion: T.func.isRequired,
+  updateCriterion: T.func.isRequired,
+  removeCriterion: T.func.isRequired
 }
 
 const CriteriaSection = props =>
-  <FormSection
-    id="criteria-section"
-    title={trans('evaluation_criteria', {}, 'dropzone')}
-    {...props}
+  <FormContainer
+    level={3}
+    name="dropzoneForm"
+    sections={[
+      {
+        id: 'criteria',
+        title: trans('criteria', {}, 'dropzone'),
+        primary: true,
+        fields: [
+          {
+            name: 'parameters.commentInCorrectionEnabled',
+            type: 'boolean',
+            label: trans('enable_comment', {}, 'dropzone')
+          },
+          {
+            name: 'parameters.commentInCorrectionForced',
+            type: 'boolean',
+            label: trans('force_comment', {}, 'dropzone')
+          },
+          {
+            name: 'parameters.criteriaEnabled',
+            type: 'boolean',
+            label: trans('enable_evaluation_criteria', {}, 'dropzone'),
+            required: props.dropzone.parameters.peerReview,
+            help: trans('required_criteria_info', {}, 'dropzone')
+          },
+          {
+            name: 'display.correctionInstruction',
+            type: 'html',
+            label: trans('correction_instruction', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.criteriaEnabled,
+            options: {
+              minRows: 3
+            }
+          },
+          {
+            name: 'parameters.criteriaTotal',
+            type: 'number',
+            label: trans('criteria_scale', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.criteriaEnabled,
+            required: props.dropzone.parameters.criteriaEnabled,
+            options: {
+              min: 2
+            }
+          }
+        ]
+      }
+    ]}
   >
-    <p>{trans('criteria_info_1', {}, 'dropzone')}</p>
-    <p>{trans('criteria_info_2', {}, 'dropzone')}</p>
-    <p>{trans('criteria_info_3', {}, 'dropzone')}</p>
-    <CheckGroup
-      checkId="comment-in-correction-enabled-chk"
-      checked={props.formData.parameters.commentInCorrectionEnabled}
-      label={trans('enable_comment', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.commentInCorrectionEnabled', checked)}
-    />
-    <CheckGroup
-      checkId="comment-in-correction-forced-chk"
-      checked={props.formData.parameters.commentInCorrectionForced}
-      label={trans('force_comment', {}, 'dropzone')}
-      onChange={checked => props.updateForm('parameters.commentInCorrectionForced', checked)}
-    />
-    <CheckGroup
-      className="criteria-enabled-chk"
-      checkId="criteria-enabled-chk"
-      checked={props.formData.parameters.criteriaEnabled}
-      label={trans('enable_evaluation_criteria', {}, 'dropzone')}
-      disabled={props.formData.parameters.peerReview}
-      onChange={checked => props.updateForm('parameters.criteriaEnabled', checked)}
-      help={get(props.errors, 'criteriaEnabled')}
-    />
-    {props.formData.parameters.criteriaEnabled &&
-      <div>
-        <HtmlGroup
-          controlId="correction-instruction"
-          label={trans('correction_instruction', {}, 'dropzone')}
-          content={props.formData.display.correctionInstruction || ''}
-          onChange={value => props.updateForm('display.correctionInstruction', value)}
-          minRows={3}
-        />
-        <NumberGroup
-          controlId="criteria-total"
-          label={trans('criteria_scale', {}, 'dropzone')}
-          value={props.formData.parameters.criteriaTotal}
-          min={2}
-          onChange={value => props.updateForm('parameters.criteriaTotal', parseInt(value))}
-          warnOnly={!props.validating}
-          error={get(props.errors, 'criteriaTotal')}
-        />
-        <Criteria/>
-      </div>
+    {props.dropzone.parameters.criteriaEnabled &&
+      <Criteria {...props}/>
     }
-  </FormSection>
+  </FormContainer>
 
 CriteriaSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
+  dropzone: T.shape(DropzoneType.propTypes),
   errors: T.object,
   validating: T.bool,
-  updateForm: T.func.isRequired
-}
-
-const NotationSection = props =>
-  <FormSection
-    id="notation-section"
-    title={trans('rating', {}, 'dropzone')}
-    {...props}
-  >
-    <NumberGroup
-      controlId="score-max"
-      label={trans('score_max', {}, 'dropzone')}
-      value={props.formData.parameters.scoreMax}
-      min={0}
-      onChange={value => props.updateForm('parameters.scoreMax', parseInt(value))}
-      warnOnly={!props.validating}
-      error={get(props.errors, 'scoreMax')}
-    />
-    <NumberGroup
-      controlId="score-to-pass"
-      label={trans('score_to_pass', {}, 'dropzone')}
-      value={props.formData.parameters.scoreToPass}
-      min={0}
-      onChange={value => props.updateForm('parameters.scoreToPass', parseInt(value))}
-      warnOnly={!props.validating}
-      error={get(props.errors, 'scoreToPass')}
-    />
-    <CheckGroup
-      checkId="display-notation-to-learners-chk"
-      checked={props.formData.display.displayNotationToLearners}
-      label={trans('display_notation_to_learners', {}, 'dropzone')}
-      onChange={checked => props.updateForm('display.displayNotationToLearners', checked)}
-    />
-    <ActivableSet
-      id="display-notation-message-to-learners"
-      label={trans('display_notation_message_to_learners', {}, 'dropzone')}
-      activated={props.formData.display.displayNotationMessageToLearners}
-      onChange={activated => props.updateForm('display.displayNotationMessageToLearners', activated)}
-    >
-      <HtmlGroup
-        controlId="success-message"
-        label={trans('success_message', {}, 'dropzone')}
-        content={props.formData.display.successMessage || ''}
-        onChange={value => props.updateForm('display.successMessage', value)}
-        minRows={3}
-        warnOnly={!props.validating}
-        error={get(props.errors, 'successMessage')}
-      />
-      <HtmlGroup
-        controlId="fail-message"
-        label={trans('fail_message', {}, 'dropzone')}
-        content={props.formData.display.failMessage || ''}
-        onChange={value => props.updateForm('display.failMessage', value)}
-        minRows={3}
-        warnOnly={!props.validating}
-        error={get(props.errors, 'failMessage')}
-      />
-    </ActivableSet>
-  </FormSection>
-
-NotationSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
-  errors: T.object,
-  validating: T.bool,
-  updateForm: T.func.isRequired
-}
-
-const PlanningSection = props =>
-  <FormSection
-    id="planning-section"
-    title={trans('planning', {}, 'dropzone')}
-    {...props}
-  >
-    <p>{trans('planning_info_1', {}, 'dropzone')}</p>
-    <p>{trans('planning_info_2', {}, 'dropzone')}</p>
-    <RadioGroup
-      controlId="planning"
-      label={trans('planning_type_label', {}, 'dropzone')}
-      options={constants.PLANNING_TYPES}
-      inline={true}
-      checkedValue={props.formData.parameters.manualPlanning ? 'manual' : 'date'}
-      onChange={value => props.updateForm('parameters.manualPlanning', value === 'manual')}
-    />
-    {props.formData.parameters.manualPlanning &&
-      <RadioGroup
-        controlId="manual-state"
-        label={trans('choose_current_state', {}, 'dropzone')}
-        options={props.formData.parameters.peerReview ? constants.PEER_PLANNING_STATES : constants.TEACHER_PLANNING_STATES}
-        inline={false}
-        checkedValue={props.formData.parameters.manualState}
-        onChange={value => props.updateForm('parameters.manualState', value)}
-      />
-    }
-    {!props.formData.parameters.manualPlanning &&
-      <div>
-        <DatetimeGroup
-          controlId="drop-start-date"
-          label={trans('drop_start_date', {}, 'dropzone')}
-          defaultValue={props.formData.parameters.dropStartDate ? moment(props.formData.parameters.dropStartDate, 'YYYY-MM-DD\THH:mm') : ''}
-          onChange={date => {
-            const stringDate = typeof date === 'string' ? date : date.format('YYYY-MM-DD\THH:mm')
-            props.updateForm('parameters.dropStartDate', stringDate)
-          }}
-          warnOnly={!props.validating}
-          error={get(props.errors, 'dropStartDate')}
-        />
-        <DatetimeGroup
-          controlId="drop-end-date"
-          label={trans('drop_end_date', {}, 'dropzone')}
-          defaultValue={props.formData.parameters.dropEndDate ? moment(props.formData.parameters.dropEndDate, 'YYYY-MM-DD\THH:mm') : ''}
-          onChange={date => {
-            const stringDate = typeof date === 'string' ? date : date.format('YYYY-MM-DD\THH:mm')
-            props.updateForm('parameters.dropEndDate', stringDate)
-          }}
-          warnOnly={!props.validating}
-          error={get(props.errors, 'dropEndDate')}
-        />
-        <CheckGroup
-          checkId="auto-close-drops-at-drop-end-date"
-          checked={props.formData.parameters.autoCloseDropsAtDropEndDate}
-          label={trans('auto_close_drops_at_drop_end_date', {}, 'dropzone')}
-          onChange={checked => props.updateForm('parameters.autoCloseDropsAtDropEndDate', checked)}
-        />
-        <DatetimeGroup
-          controlId="review-start-date"
-          label={trans('review_start_date', {}, 'dropzone')}
-          defaultValue={props.formData.parameters.reviewStartDate ? moment(props.formData.parameters.reviewStartDate, 'YYYY-MM-DD\THH:mm') : ''}
-          onChange={date => {
-            const stringDate = typeof date === 'string' ? date : date.format('YYYY-MM-DD\THH:mm')
-            props.updateForm('parameters.reviewStartDate', stringDate)
-          }}
-          warnOnly={!props.validating}
-          error={get(props.errors, 'reviewStartDate')}
-        />
-        <DatetimeGroup
-          controlId="review-end-date"
-          label={trans('review_end_date', {}, 'dropzone')}
-          defaultValue={props.formData.parameters.reviewEndDate ? moment(props.formData.parameters.reviewEndDate, 'YYYY-MM-DD\THH:mm') : ''}
-          onChange={date => {
-            const stringDate = typeof date === 'string' ? date : date.format('YYYY-MM-DD\THH:mm')
-            props.updateForm('parameters.reviewEndDate', stringDate)
-          }}
-          warnOnly={!props.validating}
-          error={get(props.errors, 'reviewEndDate')}
-        />
-      </div>
-    }
-  </FormSection>
-
-PlanningSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
-  errors: T.object,
-  validating: T.bool,
-  updateForm: T.func.isRequired
-}
-
-const NotificationsSection = props =>
-  <FormSection
-    id="notification-section"
-    title={t('notifications')}
-    {...props}
-  >
-    <CheckGroup
-      checkId="drop-notification-chk"
-      checked={props.formData.notifications.enabled}
-      label={trans('notify_managers_on_drop', {}, 'dropzone')}
-      onChange={checked => props.updateNotifications('drop', checked)}
-    />
-  </FormSection>
-
-NotificationsSection.propTypes = {
-  formData: T.shape(DropzoneType.propTypes),
-  updateNotifications: T.func.isRequired
+  addCriterion: T.func.isRequired,
+  updateCriterion: T.func.isRequired,
+  removeCriterion: T.func.isRequired
 }
 
 const DropzoneForm = props => props.canEdit ?
-  <form>
-    <div className="panel panel-default">
-      <fieldset className="panel-body">
-        <p>{trans('common_info_1', {}, 'dropzone')}</p>
-        <p>{trans('common_info_2', {}, 'dropzone')}</p>
-        <p>{trans('common_info_3', {}, 'dropzone')}</p>
-      </fieldset>
-    </div>
-    <FormSections defaultOpened="instructions-section">
-      <InstructionsSection {...props}/>
-      <DocumentsSection {...props}/>
-      <DropCorrectionSection {...props}/>
-      <CriteriaSection {...props}/>
-      <NotationSection {...props}/>
-      <PlanningSection {...props}/>
-      <NotificationsSection {...props}/>
+  <FormContainer
+    level={3}
+    name="dropzoneForm"
+    sections={[
+      {
+        id: 'general',
+        title: t('general'),
+        primary: true,
+        fields: [
+          {
+            name: 'display.instruction',
+            type: 'html',
+            label: trans('instructions', {}, 'dropzone'),
+            required: true,
+            options: {
+              minRows: 3
+            }
+          }
+        ]
+      },
+      {
+        id: 'documents',
+        title: trans('allowed_document_types', {}, 'dropzone'),
+        fields: [
+          {
+            name: 'parameters.uploadEnabled',
+            type: 'boolean',
+            label: trans('uploaded_files', {}, 'dropzone')
+          },
+          {
+            name: 'parameters.richTextEnabled',
+            type: 'boolean',
+            label: trans('rich_text_online_edition', {}, 'dropzone')
+          },
+          {
+            name: 'parameters.workspaceResourceEnabled',
+            type: 'boolean',
+            label: trans('workspace_resources', {}, 'dropzone')
+          },
+          {
+            name: 'parameters.urlEnabled',
+            type: 'boolean',
+            label: trans('url_info', {}, 'dropzone')
+          }
+        ]
+      },
+      {
+        id: 'correction',
+        title: trans('drop_and_correction_type', {}, 'dropzone'),
+        fields: [
+          {
+            name: 'parameters.dropType',
+            type: 'enum',
+            label: trans('drop_type', {}, 'dropzone'),
+            required: true,
+            options: {
+              noEmpty: true,
+              choices: constants.DROP_TYPES
+            }
+          },
+          {
+            name: 'parameters.peerReview',
+            type: 'boolean',
+            label: trans('peer_correction_info', {}, 'dropzone'),
+          },
+          {
+            name: 'parameters.expectedCorrectionTotal',
+            type: 'number',
+            label: trans('expected_correction_total_label', {}, 'dropzone'),
+            required: props.dropzone.parameters.peerReview,
+            displayed: props.dropzone.parameters.peerReview,
+            options: {
+              min: 1
+            }
+          },
+          {
+            name: 'display.displayCorrectionsToLearners',
+            type: 'boolean',
+            label: trans('display_corrections_to_learners', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.peerReview
+          },
+          {
+            name: 'parameters.correctionDenialEnabled',
+            type: 'boolean',
+            label: trans('correction_denial_label', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.peerReview && props.dropzone.display.displayCorrectionsToLearners
+          }
+        ]
+      },
+      {
+        id: 'notation',
+        title: trans('rating', {}, 'dropzone'),
+        fields: [
+          {
+            name: 'parameters.scoreMax',
+            type: 'number',
+            label: trans('score_max', {}, 'dropzone'),
+            required: true,
+            options: {
+              min: 0
+            }
+          },
+          {
+            name: 'parameters.scoreToPass',
+            type: 'number',
+            label: trans('score_to_pass', {}, 'dropzone'),
+            required: true,
+            options: {
+              min: 0
+            }
+          },
+          {
+            name: 'display.displayNotationToLearners',
+            type: 'boolean',
+            label: trans('display_notation_to_learners', {}, 'dropzone')
+          },
+          {
+            name: 'display.displayNotationMessageToLearners',
+            type: 'boolean',
+            label: trans('display_notation_message_to_learners', {}, 'dropzone')
+          },
+          {
+            name: 'display.successMessage',
+            type: 'html',
+            label: trans('success_message', {}, 'dropzone'),
+            displayed: props.dropzone.display.displayNotationMessageToLearners,
+            required: props.dropzone.display.displayNotationMessageToLearners,
+            options: {
+              minRows: 3
+            }
+          },
+          {
+            name: 'display.failMessage',
+            type: 'html',
+            label: trans('fail_message', {}, 'dropzone'),
+            displayed: props.dropzone.display.displayNotationMessageToLearners,
+            required: props.dropzone.display.displayNotationMessageToLearners,
+            options: {
+              minRows: 3
+            }
+          }
+        ]
+      },
+      {
+        id: 'planning',
+        title: trans('planning', {}, 'dropzone'),
+        fields: [
+          {
+            name: 'parameters.manualPlanning',
+            type: 'boolean',
+            label: trans('manual_planning', {}, 'dropzone'),
+            help: trans('manual_planning_info', {}, 'dropzone'),
+          },
+          {
+            name: 'parameters.manualState',
+            type: 'enum',
+            label: trans('choose_current_state', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.manualPlanning,
+            required: props.dropzone.parameters.manualPlanning,
+            options: {
+              noEmpty: true,
+              choices: props.dropzone.parameters.peerReview ? constants.PEER_PLANNING_STATES : constants.TEACHER_PLANNING_STATES
+            }
+          },
+          {
+            name: 'parameters.dropStartDate',
+            type: 'date',
+            label: trans('drop_start_date', {}, 'dropzone'),
+            displayed: !props.dropzone.parameters.manualPlanning,
+            required: !props.dropzone.parameters.manualPlanning
+          },
+          {
+            name: 'parameters.dropEndDate',
+            type: 'date',
+            label: trans('drop_end_date', {}, 'dropzone'),
+            displayed: !props.dropzone.parameters.manualPlanning,
+            required: !props.dropzone.parameters.manualPlanning
+          },
+          {
+            name: 'parameters.autoCloseDropsAtDropEndDate',
+            type: 'boolean',
+            label: trans('auto_close_drops_at_drop_end_date', {}, 'dropzone'),
+            displayed: !props.dropzone.parameters.manualPlanning
+          },
+          {
+            name: 'parameters.reviewStartDate',
+            type: 'date',
+            label: trans('review_start_date', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.peerReview && !props.dropzone.parameters.manualPlanning,
+            required: props.dropzone.parameters.peerReview && !props.dropzone.parameters.manualPlanning
+          },
+          {
+            name: 'parameters.reviewEndDate',
+            type: 'date',
+            label: trans('review_end_date', {}, 'dropzone'),
+            displayed: props.dropzone.parameters.peerReview && !props.dropzone.parameters.manualPlanning,
+            required: props.dropzone.parameters.peerReview && !props.dropzone.parameters.manualPlanning
+          }
+        ]
+      },
+      {
+        id: 'notification',
+        title: t('notifications'),
+        fields: [
+          {
+            name: 'notifications.enabled',
+            type: 'boolean',
+            label: trans('notify_managers_on_drop', {}, 'dropzone')
+          }
+        ]
+      }
+    ]}
+  >
+    <FormSections level={3}>
+      <FormSection
+        id="criteria-section"
+        title={trans('evaluation_criteria', {}, 'dropzone')}
+        level={3}
+      >
+        <p>{trans('criteria_info_1', {}, 'dropzone')}</p>
+        <p>{trans('criteria_info_2', {}, 'dropzone')}</p>
+        <p>{trans('criteria_info_3', {}, 'dropzone')}</p>
+        <CriteriaSection {...props}/>
+      </FormSection>
     </FormSections>
-  </form> :
+  </FormContainer>:
   <div className="alert alert-danger">
     {t('unauthorized')}
   </div>
 
 DropzoneForm.propTypes = {
   canEdit: T.bool.isRequired,
-  formData: T.shape(DropzoneType.propTypes),
+  dropzone: T.shape(DropzoneType.propTypes),
   errors: T.object,
   validating: T.bool,
-  updateForm: T.func.isRequired,
-  updateNotifications: T.func.isRequired
+  addCriterion: T.func.isRequired,
+  updateCriterion: T.func.isRequired,
+  removeCriterion: T.func.isRequired
 }
 
-function mapStateToProps(state) {
-  return {
+const ConnectedDropzoneForm = connect(
+  state => ({
     canEdit: resourceSelect.editable(state),
-    formData: select.formData(state),
-    errors: select.formErrors(state),
-    validating: select.formValidating(state)
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    updateForm: (property, value) => dispatch(actions.updateForm(property, value)),
-    updateNotifications: (property, value) => dispatch(actions.updateNotifications(property, value))
-  }
-}
-
-const ConnectedDropzoneForm = connect(mapStateToProps, mapDispatchToProps)(DropzoneForm)
+    dropzone: formSelect.data(formSelect.form(state, 'dropzoneForm')),
+    errors: formSelect.errors(formSelect.form(state, 'dropzoneForm')),
+    validating: formSelect.validating(formSelect.form(state, 'dropzoneForm'))
+  }),
+  dispatch => ({
+    addCriterion(dropzoneId) {
+      dispatch(actions.addCriterion(dropzoneId))
+    },
+    updateCriterion(id, property, value) {
+      dispatch(actions.updateCriterion(id, property, value))
+    },
+    removeCriterion(id) {
+      dispatch(actions.removeCriterion(id))
+    }
+  })
+)(DropzoneForm)
 
 export {
   ConnectedDropzoneForm as DropzoneForm

@@ -1,10 +1,13 @@
 import React from 'react'
+import isEmpty from 'lodash/isEmpty'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 
+import {generateUrl} from '#/main/core/fos-js-router'
 import {t, trans} from '#/main/core/translation'
 import {select as resourceSelect} from '#/main/core/layout/resource/selectors'
-import {Router} from '#/main/core/router/components/router.jsx'
+import {select as formSelect} from '#/main/core/data/form/selectors'
+import {Router, Routes} from '#/main/core/router/components/router.jsx'
 import {ResourceContainer} from '#/main/core/layout/resource/containers/resource.jsx'
 
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors.js'
@@ -20,76 +23,77 @@ import {Corrector} from '#/plugin/drop-zone/resources/dropzone/correction/compon
 import {Drop} from '#/plugin/drop-zone/resources/dropzone/correction/components/drop.jsx'
 import {PeerDrop} from '#/plugin/drop-zone/resources/dropzone/player/components/peer-drop.jsx'
 
-
 const DropzoneResource = props =>
   <ResourceContainer
     editor={{
-      opened: props.formOpened,
+      opened: !isEmpty(props.dropzoneFormData),
       open: '#/edit',
       label: t('configure'),
       save: {
-        disabled: !props.formPendingChanges || (props.formValidating && !props.formValid),
+        disabled: !props.formPendingChanges || (props.formValidating && !isEmpty(props.formErrors)),
         action: () => {
-          props.saveDropzone(props.dropzone.id, props.dropzoneForm)
+          props.saveDropzone(props.dropzone.id, props.dropzoneFormData)
         }
       }
     }}
     customActions={customActions(props)}
   >
-    <Router
-      routes={[
-        {
-          path: '/',
-          component: Menu
-        }, {
-          path: '/edit',
-          component: DropzoneForm,
-          onEnter: () => props.loadForm(props.dropzone),
-          onLeave: props.resetForm
-        }, {
-          path: '/my/drop',
-          component: MyDrop
-        }, {
-          path: '/drops',
-          component: Drops,
-          onEnter: () => props.fetchDrops(props.dropzone.id)
-        }, {
-          path: '/drop/:id',
-          component: Drop,
-          onEnter: (params) => props.fetchDrop(params.id, 'current'),
-          onLeave: () => props.resetCurrentDrop()
-        }, {
-          path: '/peer/drop',
-          component: PeerDrop,
-          onEnter: () => props.fetchPeerDrop()
-        }, {
-          path: '/correctors',
-          component: Correctors,
-          onEnter: () => {
-            props.fetchDrops(props.dropzone.id)
-            props.fetchCorrections(props.dropzone.id)
+    <Router>
+      <Routes
+        routes={[
+          {
+            path: '/',
+            exact: true,
+            component: Menu
+          }, {
+            path: '/edit',
+            component: DropzoneForm,
+            onEnter: () => props.loadForm(props.dropzone),
+            onLeave: props.resetForm
+          }, {
+            path: '/my/drop',
+            component: MyDrop
+          }, {
+            path: '/drops',
+            component: Drops,
+            // onEnter: () => props.fetchDrops(props.dropzone.id)
+          }, {
+            path: '/drop/:id',
+            component: Drop,
+            onEnter: (params) => props.fetchDrop(params.id, 'current'),
+            onLeave: () => props.resetCurrentDrop()
+          }, {
+            path: '/peer/drop',
+            component: PeerDrop,
+            onEnter: () => props.fetchPeerDrop()
+          }, {
+            path: '/correctors',
+            component: Correctors,
+            onEnter: () => {
+              props.fetchDrops(props.dropzone.id)
+              props.fetchCorrections(props.dropzone.id)
+            }
+          }, {
+            path: '/corrector/:id',
+            component: Corrector,
+            onEnter: (params) => {
+              props.fetchDrop(params.id, 'corrector')
+              props.fetchCorrections(props.dropzone.id)
+            },
+            onLeave: () => props.resetCorrectorDrop()
           }
-        }, {
-          path: '/corrector/:id',
-          component: Corrector,
-          onEnter: (params) => {
-            props.fetchDrop(params.id, 'corrector')
-            props.fetchCorrections(props.dropzone.id)
-          },
-          onLeave: () => props.resetCorrectorDrop()
-        }
-      ]}
-    />
+        ]}
+      />
+    </Router>
   </ResourceContainer>
 
 DropzoneResource.propTypes = {
   canEdit: T.bool.isRequired,
   dropzone: T.object.isRequired,
-  dropzoneForm: T.object,
-  formOpened: T.bool.isRequired,
+  dropzoneFormData: T.object,
   formPendingChanges: T.bool.isRequired,
   formValidating: T.bool.isRequired,
-  formValid: T.bool.isRequired,
+  formErrors: T.object,
   myDrop: T.object,
 
   loadForm: T.func.isRequired,
@@ -143,11 +147,10 @@ function mapStateToProps(state) {
   return {
     canEdit: resourceSelect.editable(state),
     dropzone: state.dropzone,
-    dropzoneForm: select.formData(state),
-    formOpened: select.formIsOpened(state),
-    formPendingChanges: select.formHasPendingChanges(state),
-    formValid: select.formValid(state),
-    formValidating: select.formValidating(state),
+    dropzoneFormData: formSelect.data(formSelect.form(state, 'dropzoneForm')),
+    formPendingChanges: formSelect.pendingChanges(formSelect.form(state, 'dropzoneForm')),
+    formValidating: formSelect.validating(formSelect.form(state, 'dropzoneForm')),
+    formErrors: formSelect.errors(formSelect.form(state, 'dropzoneForm')),
     myDrop: select.myDrop(state)
   }
 }
