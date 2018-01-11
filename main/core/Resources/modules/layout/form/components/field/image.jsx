@@ -1,17 +1,17 @@
 import React, {Component} from 'react'
-import {PropTypes as T} from 'prop-types'
+
 //this is not pretty
 import {connect} from 'react-redux'
 import {actions} from '#/main/core/data/form/actions.js'
 import {FileThumbnail} from '#/main/core/layout/form/components/field/file-thumbnail.jsx'
 import has from 'lodash/has'
 
+import {PropTypes as T, implementPropTypes} from '#/main/core/scaffolding/prop-types'
+import {FormField as FormFieldTypes} from '#/main/core/layout/form/prop-types'
+
 class Image extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      file: props.value || {}
-    }
   }
 
   isImage(mimeType) {
@@ -32,7 +32,7 @@ class Image extends Component {
     return (
       <fieldset>
         <input
-          id={this.props.controlId}
+          id={this.props.id}
           type="file"
           className="form-control"
           accept="image"
@@ -47,10 +47,10 @@ class Image extends Component {
             }}
           }
         />
-        {has(this.state, 'file.id') &&
+        {has(this.props.value, 'id') &&
           <div className="file-thumbnail">
             <FileThumbnail
-              data={this.state.file}
+              data={this.props.value}
               type="image"
               canEdit={false}
               canExpand={false}
@@ -68,8 +68,7 @@ class Image extends Component {
   }
 }
 
-Image.propTypes = {
-  controlId: T.string.isRequired,
+implementPropTypes(Image, FormFieldTypes, {
   value: T.object,
   disabled: T.bool.isRequired,
   autoUpload: T.bool.isRequired,
@@ -78,15 +77,13 @@ Image.propTypes = {
   deleteFile: T.func.isRequired,
   uploadUrl: T.array.isRequired,
   uploadFile: T.func.isRequired
-}
-
-Image.defaultProps = {
+}, {
   disabled: false,
   autoUpload: true,
   onChange: () => {},
   onDelete: () => {},
   uploadUrl: ['apiv2_file_upload']
-}
+})
 
 //this is not pretty
 const ConnectedImage = connect(
