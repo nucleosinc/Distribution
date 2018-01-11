@@ -22,7 +22,7 @@ class DropTextForm extends Component {
     return (
       <div id="drop-text-form">
         <HtmlGroup
-          controlId="drop-text"
+          id="drop-text"
           label="drop_text"
           content={this.state.text}
           onChange={value => this.setState({text: value})}
@@ -58,7 +58,7 @@ class DropUrlForm extends Component {
     return (
       <div id="drop-url-form">
         <TextGroup
-          controlId="drop-url"
+          id="drop-url"
           label="drop_url"
           value={this.state.url}
           placeholder="http://..."
@@ -95,6 +95,7 @@ class DropFileForm extends Component {
       <div id="drop-file-form">
         <FileGroup
           controlId="drop-file"
+          id="drop-file"
           label="drop_file"
           value={this.state.files}
           onChange={value => this.setState({files: value})}
@@ -153,7 +154,7 @@ export class DropForm extends Component {
         <h2>{trans('add_document', {}, 'dropzone')}</h2>
         {this.state.availableDropTypes.length > 0 &&
           <RadioGroup
-            controlId="drop-type"
+            id="drop-type"
             label={trans('drop_type', {}, 'dropzone')}
             options={this.state.availableDropTypes}
             checkedValue={this.state.dropType}

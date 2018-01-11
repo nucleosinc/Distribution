@@ -13,7 +13,6 @@ import {HtmlText} from '#/main/core/layout/components/html-text.jsx'
 
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
-import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
 import {actions} from '#/plugin/drop-zone/resources/dropzone/editor/actions'
 
 class Criterion extends Component {
@@ -237,7 +236,7 @@ const DropzoneForm = props => props.canEdit ?
           {
             name: 'parameters.peerReview',
             type: 'boolean',
-            label: trans('peer_correction_info', {}, 'dropzone'),
+            label: trans('peer_correction_info', {}, 'dropzone')
           },
           {
             name: 'parameters.expectedCorrectionTotal',
@@ -325,7 +324,7 @@ const DropzoneForm = props => props.canEdit ?
             name: 'parameters.manualPlanning',
             type: 'boolean',
             label: trans('manual_planning', {}, 'dropzone'),
-            help: trans('manual_planning_info', {}, 'dropzone'),
+            help: trans('manual_planning_info', {}, 'dropzone')
           },
           {
             name: 'parameters.manualState',

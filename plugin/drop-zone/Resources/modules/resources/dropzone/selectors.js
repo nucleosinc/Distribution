@@ -3,10 +3,6 @@ import {createSelector} from 'reselect'
 import {constants} from '#/plugin/drop-zone/resources/dropzone/constants'
 
 const user = state => state.user
-const userId = createSelector(
-  [user],
-  (user) => user && user.id ? user.id : null
-)
 
 const userEvaluation = state => state.userEvaluation
 
@@ -113,7 +109,6 @@ const myTeamId = createSelector(
 
 export const select = {
   user,
-  userId,
   userEvaluation,
   dropzone,
   dropzoneId,

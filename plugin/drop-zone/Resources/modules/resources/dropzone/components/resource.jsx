@@ -3,7 +3,6 @@ import isEmpty from 'lodash/isEmpty'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 
-import {generateUrl} from '#/main/core/fos-js-router'
 import {t, trans} from '#/main/core/translation'
 import {select as resourceSelect} from '#/main/core/layout/resource/selectors'
 import {select as formSelect} from '#/main/core/data/form/selectors'
@@ -55,8 +54,7 @@ const DropzoneResource = props =>
             component: MyDrop
           }, {
             path: '/drops',
-            component: Drops,
-            // onEnter: () => props.fetchDrops(props.dropzone.id)
+            component: Drops
           }, {
             path: '/drop/:id',
             component: Drop,

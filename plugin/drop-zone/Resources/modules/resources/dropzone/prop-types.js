@@ -72,7 +72,8 @@ const DocumentType = {
     type: T.number.isRequired,
     drop: T.string.isRequired,
     user: T.shape({
-      id: T.number.isRequired,
+      autoId: T.number.isRequired,
+      id: T.string.isRequired,
       username: T.string.isRequired,
       firstName: T.string.isRequired,
       lastName: T.string.isRequired
@@ -96,7 +97,8 @@ const CorrectionType = {
     id: T.string.isRequired,
     drop: T.string.isRequired,
     user: T.shape({
-      id: T.number.isRequired,
+      autoId: T.number.isRequired,
+      id: T.string.isRequired,
       username: T.string.isRequired,
       firstName: T.string.isRequired,
       lastName: T.string.isRequired
@@ -126,7 +128,8 @@ const DropType = {
     id: T.string.isRequired,
     dropzone: T.string.isRequired,
     user: T.shape({
-      id: T.number.isRequired,
+      autoId: T.number.isRequired,
+      id: T.string.isRequired,
       username: T.string.isRequired,
       firstName: T.string.isRequired,
       lastName: T.string.isRequired
@@ -144,7 +147,8 @@ const DropType = {
     documents: T.arrayOf(T.shape(DocumentType.propTypes)),
     corrections: T.arrayOf(T.shape(CorrectionType.propTypes)),
     users: T.arrayOf(T.shape({
-      id: T.number.isRequired,
+      autoId: T.number.isRequired,
+      id: T.string.isRequired,
       username: T.string.isRequired,
       firstName: T.string.isRequired,
       lastName: T.string.isRequired
