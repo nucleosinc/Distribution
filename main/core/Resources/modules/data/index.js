@@ -16,6 +16,7 @@ import {NUMBER_TYPE,   numberDefinition}   from '#/main/core/data/types/number'
 import {PASSWORD_TYPE, passwordDefinition} from '#/main/core/data/types/password'
 import {STRING_TYPE,   stringDefinition}   from '#/main/core/data/types/string'
 import {USERNAME_TYPE, usernameDefinition} from '#/main/core/data/types/username'
+import {TRANSLATION_TYPE, translationDefinition} from '#/main/core/data/types/translation'
 
 // the list of registered data types
 const dataTypes = {}
@@ -36,6 +37,7 @@ registerType(LOCALE_TYPE,   localeDefinition)
 registerType(NUMBER_TYPE,   numberDefinition)
 registerType(PASSWORD_TYPE, passwordDefinition)
 registerType(STRING_TYPE,   stringDefinition)
+registerType(TRANSLATION_TYPE, translationDefinition)
 registerType(USERNAME_TYPE, usernameDefinition)
 
 /**

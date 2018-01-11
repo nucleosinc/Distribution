@@ -1319,7 +1319,8 @@ class WorkspaceManager
         // create new name and code
         $ws = $this->getOneByCode($newWorkspace->getCode());
 
-        if ($ws) {
+        //the && part is if we somehow already flushed the workspace
+        if ($ws && $ws->getId() !== $newWorkspace->getId()) {
             $name = $newWorkspace->getName().'-'.uniqid('', true);
             $code = $newWorkspace->getCode().'-'.uniqid('', true);
         } else {
@@ -1552,7 +1553,7 @@ class WorkspaceManager
 
         foreach ($copy->getChildren() as $child) {
             foreach ($resourceNode->getChildren() as $sourceChild) {
-                if ($child->getName() === $sourceChild->getName()) {
+                if ($child->getPathForDisplay() === $sourceChild->getPathForDisplay()) {
                     $this->duplicateRights($sourceChild, $child, $workspaceRoles);
                 }
             }
@@ -1771,6 +1772,7 @@ class WorkspaceManager
             );
 
             $this->om->persist($createdRole);
+
             if ($roleName === 'ROLE_WS_MANAGER') {
                 $this->log('Adding role manager to user '.$user->getUsername());
                 $user->addRole($createdRole);
