@@ -174,6 +174,7 @@ class UserSerializer
             'personalWorkspace' => (bool) $user->getPersonalWorkspace(),
             'enabled' => $user->isEnabled(),
             'removed' => $user->isRemoved(),
+            'locale' => $user->getLocale(),
         ];
     }
 
@@ -279,6 +280,7 @@ class UserSerializer
         $this->sipe('email', 'setMail', $data, $object);
         $this->sipe('plainPassword', 'setPlainPassword', $data, $object);
         $this->sipe('meta.enabled', 'setIsEnabled', $data, $object);
+        $this->sipe('meta.locale', 'setLocale', $data, $object);
 
         if (isset($data['plainPassword'])) {
             $password = $this->container->get('security.encoder_factory')

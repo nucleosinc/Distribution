@@ -76,6 +76,14 @@ const UserForm = props =>
             name: 'administrativeCode',
             type: 'string',
             label: t('administrativeCode')
+          }, {
+            name: 'locale',
+            type: 'locale',
+            label: t('default_language'),
+            required: false,
+            options: {
+              onlyEnabled: true
+            }
           }
         ]
       }
