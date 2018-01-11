@@ -77,7 +77,7 @@ const UserForm = props =>
             type: 'string',
             label: t('administrativeCode')
           }, {
-            name: 'locale',
+            name: 'meta.locale',
             type: 'locale',
             label: t('default_language'),
             required: false,
