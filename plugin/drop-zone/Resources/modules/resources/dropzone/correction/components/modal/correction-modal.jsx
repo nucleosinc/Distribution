@@ -71,9 +71,9 @@ class DenialBox extends Component {
         {!this.state.correction.correctionDenied && this.state.showForm &&
           <div>
             <HtmlGroup
-              controlId="correction-denied-comment"
+              id="correction-denied-comment"
               label={trans('denial_reason', {}, 'dropzone')}
-              content={this.state.correction.correctionDeniedComment || ''}
+              value={this.state.correction.correctionDeniedComment || ''}
               onChange={value => this.updateCorrectionDeniedComment(value)}
               minRows={3}
               error={this.state.error}
@@ -139,7 +139,7 @@ export class CorrectionModal extends Component {
                     </td>
                     <td className="criterion-scale-form-row">
                       <RadioGroup
-                        controlId={`correction-criterion-${c.id}-radio`}
+                        id={`correction-criterion-${c.id}-radio`}
                         label="correction_criterion_radio"
                         options={[...Array(this.props.dropzone.parameters.criteriaTotal).keys()].map((idx) => {
                           return {

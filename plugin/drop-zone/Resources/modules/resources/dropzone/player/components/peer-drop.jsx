@@ -75,7 +75,7 @@ PeerDrop.propTypes = {
   dropzone: T.shape(DropzoneType.propTypes).isRequired,
   drop: T.shape(DropType.propTypes),
   user: T.shape({
-    id: T.number.isRequired
+    id: T.string.isRequired
   }),
   myTeamId: T.number,
   isPeerReviewEnabled: T.bool.isRequired,

@@ -33,7 +33,7 @@ const CriteriaForm = props =>
             </td>
             <td className="criterion-scale-form-row">
               <RadioGroup
-                controlId={`criterion-form-${c.id}-radio`}
+                id={`criterion-form-${c.id}-radio`}
                 label="criterion_form_radio"
                 options={[...Array(props.dropzone.parameters.criteriaTotal).keys()].map((idx) => {
                   return {
@@ -126,7 +126,7 @@ export class CorrectionForm extends Component {
               handleUpdate={this.updateCorrectionCriterion}
             /> :
             <NumberGroup
-              controlId="score"
+              id="score"
               label={t('score')}
               value={this.state.correction.score !== null ? this.state.correction.score : undefined}
               onChange={value => this.updateCorrection('score', parseInt(value))}
@@ -135,9 +135,9 @@ export class CorrectionForm extends Component {
           }
           {this.props.dropzone.parameters.commentInCorrectionEnabled &&
             <HtmlGroup
-              controlId="comment"
+              id="comment"
               label={t('comment')}
-              content={this.state.correction.comment || ''}
+              value={this.state.correction.comment || ''}
               onChange={value => this.updateCorrection('comment', value)}
               minRows={3}
               error={get(this.state.errors, 'comment')}
