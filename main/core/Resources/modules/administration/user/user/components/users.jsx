@@ -49,7 +49,7 @@ const UsersList = props =>
         icon: 'fa fa-fw fa-pencil',
         label: t('change_password'),
         context: 'row',
-        displayed: (rows) => rows[0].meta.personalWorkspace,
+        displayed: () => true,
         action: (rows) => props.updatePassword(rows[0]),
         dangerous: true
       },{

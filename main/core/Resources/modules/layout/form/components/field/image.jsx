@@ -20,12 +20,10 @@ class Image extends Component {
 
   onUpload(data) {
     this.props.onChange(data)
-    this.setState({file: data})
   }
 
   onDelete(data) {
     this.props.onDelete(data)
-    this.setState({file: data})
   }
 
   render() {

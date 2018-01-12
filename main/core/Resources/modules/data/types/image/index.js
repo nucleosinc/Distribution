@@ -1,6 +1,6 @@
 import {t} from '#/main/core/translation'
 
-import {Image} from '#/main/core/layout/form/components/field/image.jsx'
+import {ImageGroup} from '#/main/core/layout/form/components/group/image-group.jsx'
 
 const IMAGE_TYPE = 'image'
 
@@ -20,7 +20,7 @@ const imageDefinition = {
   render: (raw) => raw,
   validate: (value) => typeof value === 'string',
   components: {
-    form: Image
+    form: ImageGroup
   }
 }
 
