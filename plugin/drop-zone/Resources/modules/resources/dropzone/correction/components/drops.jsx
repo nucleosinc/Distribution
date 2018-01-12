@@ -18,14 +18,6 @@ class Drops extends Component {
     const columns = []
 
     columns.push({
-      name: 'dropzone',
-      label: t('resource'),
-      displayed: false,
-      displayable: false,
-      filterable: true,
-      type: 'string'
-    })
-    columns.push({
       name: 'dropDate',
       label: trans('submit_date', {}, 'dropzone'),
       displayed: true,

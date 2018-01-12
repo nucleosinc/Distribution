@@ -68,7 +68,6 @@ const DropzoneResource = props =>
             path: '/correctors',
             component: Correctors,
             onEnter: () => {
-              props.fetchDrops(props.dropzone.id)
               props.fetchCorrections(props.dropzone.id)
             }
           }, {
@@ -97,7 +96,6 @@ DropzoneResource.propTypes = {
   loadForm: T.func.isRequired,
   resetForm: T.func.isRequired,
   saveDropzone: T.func.isRequired,
-  fetchDrops: T.func.isRequired,
   fetchDrop: T.func.isRequired,
   resetCurrentDrop: T.func.isRequired,
   fetchCorrections: T.func.isRequired,
@@ -158,7 +156,6 @@ function mapDispatchToProps(dispatch) {
     loadForm: (dropzone) => dispatch(editorActions.loadForm(dropzone)),
     resetForm: () => dispatch(editorActions.resetForm()),
     saveDropzone: (dropzoneId, data) => dispatch(editorActions.saveDropzone(dropzoneId, data)),
-    fetchDrops: (dropzoneId) => dispatch(correctionActions.fetchDrops(dropzoneId)),
     fetchDrop: (dropId, type) => dispatch(correctionActions.fetchDrop(dropId, type)),
     resetCurrentDrop: () => dispatch(correctionActions.resetCurrentDrop()),
     fetchCorrections: (dropzoneId) => dispatch(correctionActions.fetchCorrections(dropzoneId)),

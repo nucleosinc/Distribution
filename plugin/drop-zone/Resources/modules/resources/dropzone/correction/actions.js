@@ -6,7 +6,6 @@ import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
 import {actions as playerActions} from '#/plugin/drop-zone/resources/dropzone/player/actions'
 
 export const DROP_UPDATE = 'DROP_UPDATE'
-export const DROPS_LOAD = 'DROPS_LOAD'
 export const CURRENT_DROP_LOAD = 'CURRENT_DROP_LOAD'
 export const CURRENT_DROP_RESET = 'CURRENT_DROP_RESET'
 export const CORRECTOR_DROP_LOAD = 'CORRECTOR_DROP_LOAD'
@@ -18,19 +17,6 @@ export const CORRECTION_REMOVE = 'CORRECTION_REMOVE'
 export const actions = {}
 
 actions.updateDrop = makeActionCreator(DROP_UPDATE, 'drop')
-actions.loadDrops = makeActionCreator(DROPS_LOAD, 'drops')
-
-actions.fetchDrops = (dropzoneId) => ({
-  [API_REQUEST]: {
-    url: generateUrl('claro_dropzone_drops_search', {id: dropzoneId}),
-    request: {
-      method: 'GET'
-    },
-    success: (data, dispatch) => {
-      dispatch(actions.loadDrops(data))
-    }
-  }
-})
 
 actions.loadCurrentDrop = makeActionCreator(CURRENT_DROP_LOAD, 'drop')
 actions.resetCurrentDrop = makeActionCreator(CURRENT_DROP_RESET)

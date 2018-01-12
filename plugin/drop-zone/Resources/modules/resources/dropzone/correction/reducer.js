@@ -5,7 +5,6 @@ import {makeListReducer} from '#/main/core/data/list/reducer'
 
 import {
   DROP_UPDATE,
-  DROPS_LOAD,
   CURRENT_DROP_LOAD,
   CURRENT_DROP_RESET,
   CORRECTOR_DROP_LOAD,
@@ -67,9 +66,6 @@ const currentDropReducer = makeReducer(null, {
 })
 
 const dropsReducer = makeReducer({}, {
-  [DROPS_LOAD]: (state, action) => {
-    return action.drops.data
-  },
   [DROP_UPDATE]: (state, action) => {
     const drops = cloneDeep(state)
     const index = drops.findIndex(d => d.id === action.drop.id)
@@ -81,17 +77,6 @@ const dropsReducer = makeReducer({}, {
     return drops
   }
 })
-
-const dropsResultsReducer = makeReducer({}, {
-  [DROPS_LOAD]: (state, action) => {
-    return action.drops.totalResults
-  }
-})
-
-const dropsListReducer = makeListReducer({
-  data: dropsReducer,
-  totalResults: dropsResultsReducer
-}, {})
 
 const correctorDropReducer = makeReducer(null, {
   [CORRECTOR_DROP_LOAD]: (state, action) => {
@@ -109,7 +94,7 @@ const correctionsReducer = makeReducer(null, {
 })
 
 const reducer = {
-  drops: dropsListReducer,
+  drops: makeListReducer('drops', {}, {data: dropsReducer}),
   currentDrop: currentDropReducer,
   correctorDrop: correctorDropReducer,
   corrections: correctionsReducer

@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
+import {generateUrl} from '#/main/core/fos-js-router'
 import {navigate} from '#/main/core/router'
 import {t, trans} from '#/main/core/translation'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
@@ -15,15 +16,6 @@ import {actions} from '#/plugin/drop-zone/resources/dropzone/correction/actions'
 class Correctors extends Component {
   generateColumns(props) {
     const columns = []
-
-    columns.push({
-      name: 'dropzone',
-      label: t('resource'),
-      displayed: false,
-      displayable: false,
-      filterable: true,
-      type: 'string'
-    })
 
     if (props.dropzone.parameters.dropType === constants.DROP_TYPE_USER) {
       columns.push({
@@ -127,6 +119,10 @@ class Correctors extends Component {
           <span className="fa fa-fw fa-circle-o-notch fa-spin"></span> :
           <DataListContainer
             name="drops"
+            fetch={{
+              url: generateUrl('claro_dropzone_drops_search', {id: this.props.dropzone.id}),
+              autoload: true
+            }}
             definition={this.generateColumns(this.props)}
             filterColumns={true}
             actions={this.generateActions(this.props)}

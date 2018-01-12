@@ -1217,7 +1217,7 @@ class DropzoneManager
 
         foreach ($corrections as $correction) {
             $teamId = $correction->getTeamId();
-            $key = empty($teamId) ? 'user_'.$correction->getUser()->getId() : 'team_'.$teamId;
+            $key = empty($teamId) ? 'user_'.$correction->getUser()->getUuid() : 'team_'.$teamId;
 
             if (!isset($data[$key])) {
                 $data[$key] = [];
