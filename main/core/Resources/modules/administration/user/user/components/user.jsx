@@ -89,13 +89,19 @@ const UserForm = props =>
             type: 'image',
             label: t('picture'),
             required: false
-          }, {
-            name: 'restrictions.accessibleUntil',
-            type: 'date',
-            label: t('expiration_date'),
-            required: false
           }
         ]
+      },
+      {
+        id: 'restrictions',
+        icon: 'fa fa-fw fa-key',
+        title: t('access_restrictions'),
+        fields: [{
+          name: 'restrictions.accessibleUntil',
+          type: 'date',
+          label: t('expiration_date'),
+          required: false
+        }]
       }
     ]}
   >
