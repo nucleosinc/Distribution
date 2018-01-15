@@ -3,7 +3,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {generateUrl} from '#/main/core/fos-js-router'
+import {generateUrl} from '#/main/core/api/router'
 import {navigate} from '#/main/core/router'
 import {t, trans} from '#/main/core/translation'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'

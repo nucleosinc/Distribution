@@ -1,9 +1,9 @@
 import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {generateUrl} from '#/main/core/fos-js-router'
+import {generateUrl} from '#/main/core/api/router'
 import {t, trans} from '#/main/core/translation'
-import {asset} from '#/main/core/asset'
+import {asset} from '#/main/core/scaffolding/asset'
 import {MODAL_DELETE_CONFIRM} from '#/main/core/layout/modal'
 import {HtmlText} from '#/main/core/layout/components/html-text.jsx'
 import {FormSections, FormSection} from '#/main/core/layout/form/components/form-sections.jsx'

@@ -1,18 +1,13 @@
-import {makeReducer} from '#/main/core/utilities/redux'
+import {makeReducer} from '#/main/core/scaffolding/reducer'
 import {makePageReducer} from '#/main/core/layout/page/reducer'
+import {makeResourceReducer} from '#/main/core/resource/reducer'
 
-// generic reducers
-import {reducer as apiReducer} from '#/main/core/api/reducer'
-import {reducer as modalReducer} from '#/main/core/layout/modal/reducer'
-import {reducer as resourceReducer} from '#/main/core/layout/resource/reducer'
-
-// dropzone reducers
 import {reducer as editorReducer} from '#/plugin/drop-zone/resources/dropzone/editor/reducer'
 import {reducer as playerReducer} from '#/plugin/drop-zone/resources/dropzone/player/reducer'
 import {reducer as correctionReducer} from '#/plugin/drop-zone/resources/dropzone/correction/reducer'
 import {reducer as configurationReducer} from '#/plugin/drop-zone/plugin/configuration/reducer'
 
-const reducer = makePageReducer({}, {
+const reducer = makeResourceReducer({}, {
   user: makeReducer({}, {}),
   dropzone: editorReducer.dropzone,
   dropzoneForm: editorReducer.dropzoneForm,
@@ -26,12 +21,7 @@ const reducer = makePageReducer({}, {
   tools: configurationReducer.tools,
   userEvaluation: makeReducer({}, {}),
   teams: makeReducer({}, {}),
-  errorMessage: makeReducer({}, {}),
-
-  // generic reducers
-  currentRequests: apiReducer,
-  modal: modalReducer,
-  resourceNode: resourceReducer
+  errorMessage: makeReducer({}, {})
 })
 
 export {

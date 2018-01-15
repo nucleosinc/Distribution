@@ -1,4 +1,4 @@
-import {bootstrap} from '#/main/core/utilities/app/bootstrap'
+import {bootstrap} from '#/main/core/scaffolding/bootstrap'
 import {registerModals} from '#/main/core/layout/modal'
 
 import {reducer} from '#/plugin/drop-zone/resources/dropzone/reducer'

@@ -2,7 +2,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import set from 'lodash/set'
 import isEmpty from 'lodash/isEmpty'
 
-import {makeReducer} from '#/main/core/utilities/redux'
+import {makeReducer} from '#/main/core/scaffolding/reducer'
 import {makeFormReducer} from '#/main/core/data/form/reducer'
 import {notBlank} from '#/main/core/validation'
 

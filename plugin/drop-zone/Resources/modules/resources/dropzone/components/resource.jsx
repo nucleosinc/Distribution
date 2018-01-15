@@ -4,10 +4,10 @@ import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 
 import {t, trans} from '#/main/core/translation'
-import {select as resourceSelect} from '#/main/core/layout/resource/selectors'
+import {select as resourceSelect} from '#/main/core/resource/selectors'
 import {select as formSelect} from '#/main/core/data/form/selectors'
 import {Router, Routes} from '#/main/core/router/components/router.jsx'
-import {ResourceContainer} from '#/main/core/layout/resource/containers/resource.jsx'
+import {ResourceContainer} from '#/main/core/resource/containers/resource.jsx'
 
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors.js'
 import {actions as editorActions} from '#/plugin/drop-zone/resources/dropzone/editor/actions.js'
