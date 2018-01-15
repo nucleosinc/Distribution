@@ -1,5 +1,4 @@
 import {makeReducer} from '#/main/core/scaffolding/reducer'
-import {makePageReducer} from '#/main/core/layout/page/reducer'
 import {makeResourceReducer} from '#/main/core/resource/reducer'
 
 import {reducer as editorReducer} from '#/plugin/drop-zone/resources/dropzone/editor/reducer'
