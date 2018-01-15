@@ -8,29 +8,12 @@ import {generateUrl} from '#/main/core/api/router'
 
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 import {MODAL_CONFIRM, MODAL_URL} from '#/main/core/layout/modal'
-
-import {
-  PageActions,
-  PageAction
-} from '#/main/core/layout/page'
-
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
 
 import {actions} from '#/main/core/administration/workspace/workspace/actions'
 import {WorkspaceList} from '#/main/core/administration/workspace/workspace/components/workspace-list.jsx'
 
-const WorkspacesActions = () =>
-  <PageActions>
-    <PageAction
-      id="workspace-add"
-      icon="fa fa-plus"
-      title={t('add_workspace')}
-      action="#/workspaces/add"
-      primary={true}
-    />
-  </PageActions>
-
-const WorkspacesPage = props =>
+const WorkspacesList = props =>
   <DataListContainer
     name="workspaces.list"
     open={WorkspaceList.open}
@@ -77,7 +60,7 @@ const WorkspacesPage = props =>
     card={WorkspaceList.card}
   />
 
-WorkspacesPage.propTypes = {
+WorkspacesList.propTypes = {
   copyWorkspaces: T.func.isRequired,
   showModal: T.func.isRequired
 }
@@ -102,9 +85,8 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-const Workspaces = connect(null, mapDispatchToProps)(WorkspacesPage)
+const Workspaces = connect(null, mapDispatchToProps)(WorkspacesList)
 
 export {
-  WorkspacesActions,
-  Workspaces
+  WorkspacesList
 }

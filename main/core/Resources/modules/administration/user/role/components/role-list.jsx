@@ -5,7 +5,7 @@ import {RoleCard} from '#/main/core/administration/user/role/components/role-car
 
 const RoleList = {
   open: {
-    action: (row) => `#/roles/${row.id}`
+    action: (row) => `#/roles/form/${row.id}`
   },
   definition: [
     {
