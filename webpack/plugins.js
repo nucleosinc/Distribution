@@ -2,6 +2,7 @@ const webpack = require('webpack')
 //const CircularDependencyPlugin = require('circular-dependency-plugin')
 const paths = require('./paths')
 //const ConfigurationPlugin = require('./build/configuration/plugin')
+const AssetsPlugin = require('assets-webpack-plugin')
 
 
 /**
@@ -127,15 +128,29 @@ const rethrowCompilationErrors = () => {
   }
 }
 
+/**
+ * Outputs information about generated assets in a dedicated file
+ * ("webpack-assets.json" by default). This is useful to retrieve assets names
+ * when a hash has been used for cache busting.
+ */
+const assetsInfoFile = filename => {
+  return new AssetsPlugin({
+    fullPath: false,
+    prettyPrint: true,
+    filename: filename || 'webpack-assets.json'
+  })
+}
+
 module.exports = {
   distributionShortcut,
   dedupeModules,
+  dlls,
   defineProdEnv,
   rejectBuildErrors,
   noCircularDependencies,
   rethrowCompilationErrors,
   dllReferences,
-  dlls,
   configShortcut,
-  clarolineConfiguration
+  clarolineConfiguration,
+  assetsInfoFile
 }

@@ -5,32 +5,28 @@ const entries = require('./webpack/entries')
 const libraries = require('./webpack/libraries')
 const webpack = require('webpack')
 const plugins = require('./webpack/plugins')
-
-const BowerResolvePlugin = require("bower-resolve-webpack-plugin");
-
+const paths = require('./webpack/paths')
+const shared = require('./webpack/shared')
 const collectedEntries = entries.collectEntries()
+const manifests = shared.dllManifests()
 
 Encore
-    .setOutputPath('web/dist/')
-    .setPublicPath('/dist')
+    .setOutputPath(paths.output())
+    .setPublicPath('http://localhost:8080/dist')
     .autoProvidejQuery()
     .enableReactPreset()
-    .enableSourceMaps(!Encore.isProduction())
-    .cleanupOutputBeforeBuild()
+    .setManifestKeyPrefix('/dist')
     .enableBuildNotifications()
+    .addPlugin(plugins.distributionShortcut())
   //  .enablePostCssLoader()
 
+const references = plugins.dllReferences(manifests)
+references.forEach(reference => Encore.addPlugin(reference))
+
 //allow url rewriting for '#/'
-Encore.addPlugin(plugins.distributionShortcut())
-//Encore.addPlugin(new BowerResolvePlugin())
-//Encore.addLoader({test: /\.css$/, loader: 'style!css'})
 Encore.addLoader({test: /\.html$/, loader: 'html-loader'})
 
 Object.keys(collectedEntries).forEach(key => Encore.addEntry(key, collectedEntries[key]))
-
-let shared = []
-Object.keys(libraries).forEach(key => shared = shared.concat(libraries[key]))
-Encore.createSharedEntry('dll', shared)
 
 config = Encore.getWebpackConfig()
 
