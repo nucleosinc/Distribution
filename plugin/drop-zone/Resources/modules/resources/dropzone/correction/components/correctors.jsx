@@ -35,7 +35,7 @@ class Correctors extends Component {
         label: trans('team', {}, 'team'),
         displayed: true,
         renderer: (rowData) => {
-          const link = <a href={`#/corrector/${rowData.id}`}>{t(rowData.teamName)}</a>
+          const link = <a href={`#/corrector/${rowData.id}`}>{trans(rowData.teamName, {}, 'platform')}</a>
 
           return link
         }
