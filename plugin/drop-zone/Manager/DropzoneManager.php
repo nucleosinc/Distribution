@@ -226,7 +226,7 @@ class DropzoneManager
         if ($this->fileSystem->exists($dropzoneDir)) {
             $this->fileSystem->remove($dropzoneDir);
         }
-        $this->crud->delete($dropzone, 'Claroline\DropZoneBundle\Entity\Dropzone');
+        $this->crud->delete($dropzone);
         $this->om->endFlushSuite();
     }
 
