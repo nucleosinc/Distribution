@@ -3,7 +3,7 @@ import isEmpty from 'lodash/isEmpty'
 import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {select as resourceSelect} from '#/main/core/resource/selectors'
 import {select as formSelect} from '#/main/core/data/form/selectors'
 import {Router, Routes} from '#/main/core/router/components/router.jsx'
@@ -27,7 +27,7 @@ const DropzoneResource = props =>
     editor={{
       opened: !isEmpty(props.dropzoneFormData),
       open: '#/edit',
-      label: t('configure'),
+      label: trans('configure', {}, 'platform'),
       save: {
         disabled: !props.formPendingChanges || (props.formValidating && !isEmpty(props.formErrors)),
         action: () => {
@@ -108,7 +108,7 @@ function customActions(props) {
 
   actions.push({
     icon: 'fa fa-fw fa-home',
-    label: t('home'),
+    label: trans('home', {}, 'platform'),
     action: '#/'
   })
 

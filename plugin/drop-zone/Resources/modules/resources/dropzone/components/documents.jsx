@@ -2,7 +2,7 @@ import React from 'react'
 import {PropTypes as T} from 'prop-types'
 
 import {generateUrl} from '#/main/core/api/router'
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {asset} from '#/main/core/scaffolding/asset'
 import {MODAL_DELETE_CONFIRM} from '#/main/core/layout/modal'
 import {HtmlText} from '#/main/core/layout/components/html-text.jsx'
@@ -117,17 +117,17 @@ export const Documents = props =>
               <tr>
                 <th>{trans('drop_type', {}, 'dropzone')}</th>
                 {props.showUser &&
-                  <th>{t('user')}</th>
+                  <th>{trans('user', {}, 'platform')}</th>
                 }
                 {props.showMeta &&
                   <th>{trans('drop_date', {}, 'dropzone')}</th>
                 }
                 <th>{trans('document', {}, 'dropzone')}</th>
                 {props.canEdit &&
-                  <th>{t('actions')}</th>
+                  <th>{trans('actions', {}, 'platform')}</th>
                 }
                 {props.showTools && props.tools.length > 0 &&
-                  <th>{t('tools')}</th>
+                  <th>{trans('tools', {}, 'platform')}</th>
                 }
               </tr>
             </thead>

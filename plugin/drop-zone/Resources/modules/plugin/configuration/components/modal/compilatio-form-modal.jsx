@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/lib/Modal'
 
 import {BaseModal} from '#/main/core/layout/modal/components/base.jsx'
 import {TextGroup}  from '#/main/core/layout/form/components/group/text-group.jsx'
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 
 import {actions} from '#/plugin/drop-zone/plugin/configuration/actions'
@@ -18,7 +18,7 @@ const CompilatioFormModal = props =>
         <form>
           <TextGroup
             id="tool-name"
-            label={t('name')}
+            label={trans('name', {}, 'platform')}
             value={props.toolForm.data.name}
             onChange={value => props.updateToolForm('name', value)}
             warnOnly={!props.toolForm.validating}
@@ -52,7 +52,7 @@ const CompilatioFormModal = props =>
           props.resetToolForm()
         }}
       >
-        {t('cancel')}
+        {trans('cancel', {}, 'platform')}
       </button>
       <button
         className="btn btn-primary"
@@ -60,7 +60,7 @@ const CompilatioFormModal = props =>
           props.submitTool(props.toolForm.data)
         }}
       >
-        {t('ok')}
+        {trans('ok', {}, 'platform')}
       </button>
     </Modal.Footer>
   </BaseModal>

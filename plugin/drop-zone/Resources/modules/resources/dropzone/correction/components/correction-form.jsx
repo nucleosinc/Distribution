@@ -4,7 +4,7 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import moment from 'moment'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {NumberGroup}  from '#/main/core/layout/form/components/group/number-group.jsx'
 import {HtmlGroup}  from '#/main/core/layout/form/components/group/html-group.jsx'
 import {RadioGroup}  from '#/main/core/layout/form/components/group/radio-group.jsx'
@@ -127,7 +127,7 @@ export class CorrectionForm extends Component {
             /> :
             <NumberGroup
               id="score"
-              label={t('score')}
+              label={trans('score', {}, 'platform')}
               value={this.state.correction.score !== null ? this.state.correction.score : undefined}
               onChange={value => this.updateCorrection('score', parseInt(value))}
               error={get(this.state.errors, 'score')}
@@ -136,7 +136,7 @@ export class CorrectionForm extends Component {
           {this.props.dropzone.parameters.commentInCorrectionEnabled &&
             <HtmlGroup
               id="comment"
-              label={t('comment')}
+              label={trans('comment', {}, 'platform')}
               value={this.state.correction.comment || ''}
               onChange={value => this.updateCorrection('comment', value)}
               minRows={3}
@@ -149,7 +149,7 @@ export class CorrectionForm extends Component {
               type="button"
               onClick={() => this.props.cancelCorrection()}
             >
-              {t('cancel')}
+              {trans('cancel', {}, 'platform')}
             </button>
             {this.props.showSubmitButton && this.props.correction.startDate !== this.props.correction.lastEditionDate &&
               <button
@@ -174,7 +174,7 @@ export class CorrectionForm extends Component {
               }
               onClick={() => this.validateCorrection()}
             >
-              {t('save')}
+              {trans('save', {}, 'platform')}
             </button>
           </div>
         </div>

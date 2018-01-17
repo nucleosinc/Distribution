@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {RadioGroup} from '#/main/core/layout/form/components/group/radio-group.jsx'
 import {HtmlGroup}  from '#/main/core/layout/form/components/group/html-group.jsx'
 import {TextGroup}  from '#/main/core/layout/form/components/group/text-group.jsx'
@@ -35,7 +35,7 @@ class DropTextForm extends Component {
           disabled={!this.state.text}
           onClick={() => this.props.handleSubmit(this.state.text)}
         >
-          {t('add')}
+          {trans('add', {}, 'platform')}
         </button>
       </div>
     )
@@ -71,7 +71,7 @@ class DropUrlForm extends Component {
           disabled={!this.state.url}
           onClick={() => this.props.handleSubmit(this.state.url)}
         >
-          {t('add')}
+          {trans('add', {}, 'platform')}
         </button>
       </div>
     )
@@ -108,7 +108,7 @@ class DropFileForm extends Component {
           disabled={this.state.files.length === 0}
           onClick={() => this.props.handleSubmit(this.state.files)}
         >
-          {t('add')}
+          {trans('add', {}, 'platform')}
         </button>
       </div>
     )

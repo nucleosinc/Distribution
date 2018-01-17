@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 import {MODAL_CONFIRM} from '#/main/core/layout/modal'
 import {FormSections, FormSection} from '#/main/core/layout/form/components/form-sections.jsx'
@@ -27,10 +27,10 @@ const Corrections = props =>
           <tr>
             <th></th>
             <th></th>
-            <th>{t('start_date')}</th>
-            <th>{t('end_date')}</th>
+            <th>{trans('start_date', {}, 'platform')}</th>
+            <th>{trans('end_date', {}, 'platform')}</th>
             {props.dropzone.display.displayNotationToLearners &&
-              <th>{t('score')}</th>
+              <th>{trans('score', {}, 'platform')}</th>
             }
           </tr>
         </thead>

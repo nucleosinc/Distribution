@@ -5,7 +5,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {generateUrl} from '#/main/core/api/router'
 import {navigate} from '#/main/core/router'
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
 
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
@@ -36,7 +36,7 @@ class Drops extends Component {
     if (props.dropzone.parameters.dropType === constants.DROP_TYPE_USER) {
       columns.push({
         name: 'user',
-        label: t('user'),
+        label: trans('user', {}, 'platform'),
         displayed: true,
         renderer: (rowData) => rowData.user ? `${rowData.user.firstName} ${rowData.user.lastName}` : '-'
       })
@@ -51,7 +51,7 @@ class Drops extends Component {
     }
     columns.push({
       name: 'score',
-      label: t('score'),
+      label: trans('score', {}, 'platform'),
       displayed: true,
       renderer: (rowData) => rowData.score !== null ? `${rowData.score} / ${props.dropzone.parameters.scoreMax}` : ''
     })
@@ -86,7 +86,7 @@ class Drops extends Component {
     })
     columns.push({
       name: 'autoClosedDrop',
-      label: t('incomplete'),
+      label: trans('incomplete', {}, 'platform'),
       displayed: true,
       type: 'boolean'
     })
@@ -98,7 +98,7 @@ class Drops extends Component {
     const actions = []
     actions.push({
       icon: 'fa fa-fw fa-eye',
-      label: t('open'),
+      label: trans('open', {}, 'platform'),
       action: (rows) => navigate(`/drop/${rows[0].id}`),
       context: 'row'
     })

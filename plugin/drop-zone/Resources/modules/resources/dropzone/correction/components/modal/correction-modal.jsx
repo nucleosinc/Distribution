@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import Modal from 'react-bootstrap/lib/Modal'
 
 import {BaseModal} from '#/main/core/layout/modal/components/base.jsx'
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {HtmlGroup}  from '#/main/core/layout/form/components/group/html-group.jsx'
 import {RadioGroup}  from '#/main/core/layout/form/components/group/radio-group.jsx'
 import {HtmlText} from '#/main/core/layout/components/html-text.jsx'
@@ -84,7 +84,7 @@ class DenialBox extends Component {
                 type="button"
                 onClick={() => this.cancelDeniedComment()}
               >
-                {t('cancel')}
+                {trans('cancel', {}, 'platform')}
               </button>
               <button
                 className="btn btn-primary"
@@ -92,7 +92,7 @@ class DenialBox extends Component {
                 disabled={!this.state.correction.correctionDeniedComment}
                 onClick={() => this.validateDeniedComment()}
               >
-                {t('save')}
+                {trans('save', {}, 'platform')}
               </button>
             </div>
           </div>
@@ -164,7 +164,7 @@ export class CorrectionModal extends Component {
           }
           {this.state.correction.comment &&
             <div>
-              <h3>{t('comment')}</h3>
+              <h3>{trans('comment', {}, 'platform')}</h3>
               <HtmlText className="correction-comment">
                 {this.state.correction.comment}
               </HtmlText>
@@ -180,7 +180,7 @@ export class CorrectionModal extends Component {
             type="button"
             onClick={this.props.fadeModal}
           >
-            {t('close')}
+            {trans('close', {}, 'platform')}
           </button>
         </Modal.Footer>
       </BaseModal>

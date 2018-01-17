@@ -3,7 +3,7 @@ import moment from 'moment'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 
 import {DropzoneType, DropType, CorrectionType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
 import {select} from '#/plugin/drop-zone/resources/dropzone/selectors'
@@ -16,11 +16,11 @@ const Corrections = props => props.corrections && props.corrections.length > 0 ?
       <tr>
         <th></th>
         <th>{trans('drop_author', {}, 'dropzone')}</th>
-        <th>{t('start_date')}</th>
+        <th>{trans('start_date', {}, 'platform')}</th>
         <th>{trans('last_edition_date', {}, 'dropzone')}</th>
         <th>{trans('finished', {}, 'dropzone')}</th>
-        <th>{t('end_date')}</th>
-        <th>{t('score')}</th>
+        <th>{trans('end_date', {}, 'platform')}</th>
+        <th>{trans('score', {}, 'platform')}</th>
       </tr>
     </thead>
     <tbody>

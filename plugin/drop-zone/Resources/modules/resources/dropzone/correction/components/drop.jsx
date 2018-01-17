@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {FormSections, FormSection} from '#/main/core/layout/form/components/form-sections.jsx'
 
 import {DropzoneType, DropType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
@@ -24,10 +24,10 @@ const Corrections = props =>
           <tr>
             <th></th>
             <th>{trans('corrector', {}, 'dropzone')}</th>
-            <th>{t('start_date')}</th>
-            <th>{t('end_date')}</th>
-            <th>{t('score')}</th>
-            <th>{t('actions')}</th>
+            <th>{trans('start_date', {}, 'platform')}</th>
+            <th>{trans('end_date', {}, 'platform')}</th>
+            <th>{trans('score', {}, 'platform')}</th>
+            <th>{trans('actions', {}, 'platform')}</th>
           </tr>
         </thead>
         <tbody>

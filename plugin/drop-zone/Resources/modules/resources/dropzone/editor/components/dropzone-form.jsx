@@ -3,7 +3,7 @@ import {PropTypes as T} from 'prop-types'
 import {connect} from 'react-redux'
 import get from 'lodash/get'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {select as resourceSelect} from '#/main/core/resource/selectors'
 import {select as formSelect} from '#/main/core/data/form/selectors'
 import {FormContainer} from '#/main/core/data/form/containers/form.jsx'
@@ -179,7 +179,7 @@ const DropzoneForm = props => props.canEdit ?
     sections={[
       {
         id: 'general',
-        title: t('general'),
+        title: trans('general', {}, 'platform'),
         primary: true,
         fields: [
           {
@@ -375,7 +375,7 @@ const DropzoneForm = props => props.canEdit ?
       },
       {
         id: 'notification',
-        title: t('notifications'),
+        title: trans('notifications', {}, 'platform'),
         fields: [
           {
             name: 'notifications.enabled',
@@ -400,7 +400,7 @@ const DropzoneForm = props => props.canEdit ?
     </FormSections>
   </FormContainer>:
   <div className="alert alert-danger">
-    {t('unauthorized')}
+    {trans('unauthorized', {}, 'platform')}
   </div>
 
 DropzoneForm.propTypes = {

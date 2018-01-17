@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {MODAL_DELETE_CONFIRM} from '#/main/core/layout/modal'
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 
@@ -109,7 +109,7 @@ class CorrectionRow extends Component {
                 type="button"
                 onClick={() => this.showCorrectionEditionForm()}
               >
-                {t('edit')}
+                {trans('edit', {}, 'platform')}
               </button>
             }
             {!this.props.correction.finished && this.props.correction.startDate !== this.props.correction.lastEditionDate &&
@@ -126,7 +126,7 @@ class CorrectionRow extends Component {
               type="button"
               onClick={() => this.deleteCorrection(this.props.correction.id)}
             >
-              {t('delete')}
+              {trans('delete', {}, 'platform')}
             </button>
           </div>
         </td>

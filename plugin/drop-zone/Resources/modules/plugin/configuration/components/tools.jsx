@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {PropTypes as T} from 'prop-types'
 
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {actions as modalActions} from '#/main/core/layout/modal/actions'
 import {MODAL_GENERIC_TYPE_PICKER} from '#/main/core/layout/modal'
 import {constants as listConstants} from '#/main/core/data/list/constants'
@@ -70,13 +70,13 @@ class Tools extends Component {
 
     columns.push({
       name: 'name',
-      label: t('name'),
+      label: trans('name', {}, 'platform'),
       type: 'string',
       displayed: true
     })
     columns.push({
       name: 'type',
-      label: t('type'),
+      label: trans('type', {}, 'platform'),
       type: 'number',
       displayed: true,
       renderer: (rowData) => {

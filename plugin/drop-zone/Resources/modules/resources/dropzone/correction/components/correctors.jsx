@@ -4,7 +4,7 @@ import {PropTypes as T} from 'prop-types'
 
 import {generateUrl} from '#/main/core/api/router'
 import {navigate} from '#/main/core/router'
-import {t, trans} from '#/main/core/translation'
+import {trans} from '#/main/core/translation'
 import {DataListContainer} from '#/main/core/data/list/containers/data-list.jsx'
 
 import {DropzoneType} from '#/plugin/drop-zone/resources/dropzone/prop-types'
@@ -20,7 +20,7 @@ class Correctors extends Component {
     if (props.dropzone.parameters.dropType === constants.DROP_TYPE_USER) {
       columns.push({
         name: 'user',
-        label: t('user'),
+        label: trans('user', {}, 'platform'),
         displayed: true,
         renderer: (rowData) => {
           const link = <a href={`#/corrector/${rowData.id}`}>{rowData.user.firstName} {rowData.user.lastName}</a>
@@ -97,7 +97,7 @@ class Correctors extends Component {
     const actions = []
     actions.push({
       icon: 'fa fa-fw fa-eye',
-      label: t('open'),
+      label: trans('open', {}, 'platform'),
       action: (rows) => navigate(`/corrector/${rows[0].id}`),
       context: 'row'
     })
