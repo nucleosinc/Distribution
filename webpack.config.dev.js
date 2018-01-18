@@ -17,12 +17,14 @@ Encore
     .enableReactPreset()
     .setManifestKeyPrefix('/dist')
     .enableBuildNotifications()
+    .enableSourceMaps(true)
     .addPlugin(plugins.distributionShortcut())
   //  .enablePostCssLoader()
-
+/*
+dll references are buggy atm
 const references = plugins.dllReferences(manifests)
 references.forEach(reference => Encore.addPlugin(reference))
-
+*/
 //allow url rewriting for '#/'
 Encore.addLoader({test: /\.html$/, loader: 'html-loader'})
 
@@ -30,11 +32,15 @@ Object.keys(collectedEntries).forEach(key => Encore.addEntry(key, collectedEntri
 
 config = Encore.getWebpackConfig()
 
+console.error(config)
+
 config.resolve.modules = ['./node_modules', './web/packages']
 //in that order it solves some issues... if we start with bower.json, many packages don't work
 config.resolve.descriptionFiles = ['package.json', '.bower.json', 'bower.json']
 config.resolve.mainFields = ['main', 'browser']
 config.resolve.aliasFields = ['browser']
+config.resolve.alias = shared.aliases()
+config.externals = shared.externals()
 
 // export the final configuration
 module.exports = config

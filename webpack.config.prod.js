@@ -18,11 +18,12 @@ Encore
     //.enableSourceMaps(!Encore.isProduction())
     //.cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    //.enableVersioning(!Encore.isProduction())
+    .enableVersioning(true)
     .addPlugin(plugins.distributionShortcut())
     .addPlugin(plugins.assetsInfoFile())
   //  .enablePostCssLoader()
 /*
+dll references are buggy atm
 const references = plugins.dllReferences(manifests)
 references.forEach(reference => Encore.addPlugin(reference))
 */
